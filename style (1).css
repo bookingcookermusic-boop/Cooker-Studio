@@ -37,7 +37,7 @@ body {
   line-height: 1.5;
 }
 
-/* ── SIDEBAR ── */
+/* â”€â”€ SIDEBAR â”€â”€ */
 .sidebar {
   width: var(--sidebar-w);
   background: var(--surface);
@@ -121,7 +121,7 @@ body {
   flex-shrink: 0;
 }
 
-/* ── MAIN ── */
+/* â”€â”€ MAIN â”€â”€ */
 .main {
   margin-left: var(--sidebar-w);
   flex: 1;
@@ -149,7 +149,7 @@ body {
   margin: 1.75rem 0 1rem;
 }
 
-/* ── MEDIA ── */
+/* â”€â”€ MEDIA â”€â”€ */
 .drop-zone {
   border: 1.5px dashed var(--border2);
   border-radius: var(--radius-lg);
@@ -241,7 +241,7 @@ body {
 .hint-text { font-size: .82rem; color: var(--text3); }
 .hint-text strong { color: var(--text2); }
 
-/* ── GENERATE ── */
+/* â”€â”€ GENERATE â”€â”€ */
 .gen-layout {
   display: grid;
   grid-template-columns: 340px 1fr;
@@ -390,7 +390,7 @@ select option { background: var(--surface2); }
   min-height: 36px;
 }
 .output-content.loading { color: var(--text2); }
-.output-content.loading::after { content: '▋'; animation: blink .7s infinite; margin-left: 2px; }
+.output-content.loading::after { content: 'â–‹'; animation: blink .7s infinite; margin-left: 2px; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
 .output-actions {
@@ -412,7 +412,7 @@ select option { background: var(--surface2); }
   border-radius: var(--radius-lg);
 }
 
-/* ── PLANNING ── */
+/* â”€â”€ PLANNING â”€â”€ */
 .week-grid {
   display: flex;
   flex-direction: column;
@@ -459,7 +459,7 @@ select option { background: var(--surface2); }
 .badge.blue { background: var(--blue-dim); color: var(--blue); }
 .badge.accent { background: var(--accent-dim); color: var(--accent); }
 
-/* ── STATS ── */
+/* â”€â”€ STATS â”€â”€ */
 .stats-top {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -565,7 +565,7 @@ select option { background: var(--surface2); }
 }
 .insight-box svg { flex-shrink: 0; margin-top: 1px; color: var(--blue); }
 
-/* ── MOBILE ── */
+/* â”€â”€ MOBILE â”€â”€ */
 @media (max-width: 768px) {
   :root { --sidebar-w: 0px; }
   .sidebar { display: none; }
@@ -595,7 +595,7 @@ select option { background: var(--surface2); }
 }
 @media (min-width: 769px) { .mobile-nav { display: none !important; } }
 
-/* ─── ADDITIONS SUPABASE ─── */
+/* â”€â”€â”€ ADDITIONS SUPABASE â”€â”€â”€ */
 .media-thumb { width:100%; height:100%; object-fit:cover; border-radius:8px; }
 .media-card.selected .media-thumb-wrap { outline: 2px solid var(--accent); }
 .video-badge { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.6); color:#fff; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-size:12px; pointer-events:none; }
