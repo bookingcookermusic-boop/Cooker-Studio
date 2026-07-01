@@ -75,7 +75,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 .format-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
 .selected-media-box { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius); font-size: .85rem; min-height: 44px; }
 .no-media-text { color: var(--text2); font-size: .82rem; }
-textarea, select, input[type=number] { width: 100%; background: var(--surface2); border: 1.5px solid var(--border2); border-radius: var(--radius); color: var(--text); font-family: 'Inter', sans-serif; font-size: .9rem; padding: 10px 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
+textarea, select, input[type=number], input[type=text], input[type=password] { width: 100%; background: var(--surface2); border: 1.5px solid var(--border2); border-radius: var(--radius); color: var(--text); font-family: 'Inter', sans-serif; font-size: .9rem; padding: 10px 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
 textarea:focus, select:focus, input:focus { border-color: var(--accent); }
 textarea { resize: vertical; line-height: 1.5; }
 select { cursor: pointer; }
@@ -86,13 +86,16 @@ select { cursor: pointer; }
 .btn-primary.btn-sm { width: auto; padding: 8px 16px; font-size: .82rem; }
 .btn-secondary { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; background: var(--surface2); color: var(--text); border: 1.5px solid var(--border2); border-radius: var(--radius); font-size: .85rem; font-weight: 500; cursor: pointer; transition: background .15s; }
 .btn-secondary:hover { background: var(--surface3); }
+.btn-instagram { display: inline-flex; align-items: center; gap: 7px; padding: 11px 20px; background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: #fff; border: none; border-radius: var(--radius); font-size: .88rem; font-weight: 600; cursor: pointer; width: 100%; justify-content: center; transition: opacity .15s; margin-top: 8px; }
+.btn-instagram:hover { opacity: .9; }
+.btn-instagram:disabled { opacity: .5; cursor: not-allowed; }
 .output-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
 .output-field { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); }
 .output-label { display: flex; justify-content: space-between; align-items: center; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text2); margin-bottom: .5rem; }
 .copy-btn { padding: 3px 10px; border: 1px solid var(--border2); border-radius: 6px; background: var(--surface2); color: var(--text2); font-size: .75rem; cursor: pointer; transition: color .15s; font-weight: 400; }
 .copy-btn:hover { color: var(--text); }
 .output-content { font-size: .88rem; line-height: 1.65; color: var(--text); white-space: pre-wrap; min-height: 36px; }
-.output-actions { display: flex; gap: 8px; padding: 1rem 1.25rem; background: var(--surface2); border-top: 1px solid var(--border); }
+.output-actions { display: flex; gap: 8px; padding: 1rem 1.25rem; background: var(--surface2); border-top: 1px solid var(--border); flex-wrap: wrap; }
 .output-actions .btn-primary { flex: 1; }
 .output-actions .btn-secondary { flex-shrink: 0; }
 .output-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px; gap: 1rem; color: var(--text3); font-size: .88rem; border: 1px dashed var(--border); border-radius: var(--radius-lg); }
@@ -133,6 +136,13 @@ select { cursor: pointer; }
 .bar-val { font-size: .82rem; font-weight: 600; text-align: right; }
 .insight-box { display: flex; gap: 10px; align-items: flex-start; background: var(--blue-dim); border: 1px solid rgba(96,165,250,.2); border-radius: var(--radius); padding: 12px 16px; margin-top: 1rem; font-size: .85rem; color: var(--text2); line-height: 1.5; }
 .insight-box svg { flex-shrink: 0; margin-top: 1px; color: var(--blue); }
+.settings-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
+.settings-card h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+.settings-row { display: flex; gap: 8px; align-items: flex-end; }
+.settings-row .field-group { flex: 1; margin-bottom: 0; }
+.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--text3); margin-right: 6px; }
+.status-dot.connected { background: var(--success); }
+.status-text { font-size: .82rem; color: var(--text2); margin-top: 8px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .spin { animation: spin .8s linear infinite; }
 @media (max-width: 768px) {
@@ -168,10 +178,14 @@ select { cursor: pointer; }
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
       Performances
     </button>
+    <button class="nav-item" data-screen="settings">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Parametres
+    </button>
   </nav>
   <div class="sidebar-footer">
     <div class="profile-chip">
-      <div class="profile-avatar">SP</div>
+      <div class="profile-avatar">CM</div>
       <span>cooker_music</span>
     </div>
   </div>
@@ -219,7 +233,7 @@ select { cursor: pointer; }
         </div>
         <div class="field-group">
           <label class="field-label">Contexte</label>
-          <textarea id="extra-context" rows="3" placeholder="ex: La Demesure, samedi 3h du matin, salle blindee..."></textarea>
+          <textarea id="extra-context" rows="3" placeholder="ex: Samedi 12 juillet, Club Le Duplex, disco house minuit..."></textarea>
         </div>
         <div class="field-group">
           <label class="field-label">Ton</label>
@@ -250,8 +264,14 @@ select { cursor: pointer; }
             <div class="output-content" id="brief-out"></div>
           </div>
           <div class="output-actions">
-            <button class="btn-secondary" onclick="generateContent()">Regenérer</button>
+            <button class="btn-secondary" onclick="generateContent()">Regenerer</button>
             <button class="btn-primary" onclick="addToPlanning()">Ajouter au planning</button>
+          </div>
+          <div style="padding: 1rem 1.25rem; border-top: 1px solid var(--border);">
+            <button class="btn-instagram" id="ig-btn" onclick="publishToInstagram()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+              Publier sur Instagram
+            </button>
           </div>
         </div>
         <div class="output-empty" id="output-empty">
@@ -316,6 +336,43 @@ select { cursor: pointer; }
       <p>Ton contenu original ne perce pas via Decouvrir. Priorite : hook visuel fort dans la premiere seconde.</p>
     </div>
   </section>
+
+  <section id="screen-settings" class="screen">
+    <div class="screen-header">
+      <h1>Parametres</h1>
+      <p>Configure ta connexion Instagram pour publier directement</p>
+    </div>
+
+    <div class="settings-card">
+      <h2>Connexion Instagram</h2>
+      <div class="field-group">
+        <label class="field-label">Access Token Instagram</label>
+        <input type="password" id="ig-token-input" placeholder="Colle ton token ici...">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Instagram Account ID</label>
+        <input type="text" id="ig-account-input" placeholder="ex: 17841234567890123">
+        <p style="font-size:.78rem;color:var(--text3);margin-top:6px">Trouve-le dans Graph API Explorer avec : me/accounts puis clique sur ta page</p>
+      </div>
+      <button class="btn-primary btn-sm" style="width:auto" onclick="saveIgSettings()">Sauvegarder</button>
+      <p class="status-text" id="ig-status">
+        <span class="status-dot" id="ig-dot"></span>
+        <span id="ig-status-text">Non configure</span>
+      </p>
+    </div>
+
+    <div class="settings-card">
+      <h2>Comment trouver ton Account ID</h2>
+      <p style="font-size:.85rem;color:var(--text2);line-height:1.7">
+        1. Va sur <strong>developers.facebook.com/tools/explorer</strong><br>
+        2. Selectionne ton app en haut a droite<br>
+        3. Dans le champ, tape : <strong>me/accounts</strong> et clique Submit<br>
+        4. Clique sur l ID de ta page Facebook<br>
+        5. Dans la nouvelle page, tape : <strong>?fields=instagram_business_account</strong><br>
+        6. L ID affiche est ton Instagram Account ID
+      </p>
+    </div>
+  </section>
 </main>
 
 <script>
@@ -328,70 +385,47 @@ function sbUpload(file) {
   var ext = file.name.split('.').pop();
   var path = Date.now() + '_' + Math.random().toString(36).slice(2) + '.' + ext;
   return fetch(SURL + '/storage/v1/object/' + BUCKET + '/' + path, {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + SKEY, 'apikey': SKEY },
-    body: file
-  }).then(function(r) {
-    if (!r.ok) throw new Error('Upload echoue');
-    return SURL + '/storage/v1/object/public/' + BUCKET + '/' + path;
-  });
+    method: 'POST', headers: { 'Authorization': 'Bearer ' + SKEY, 'apikey': SKEY }, body: file
+  }).then(function(r) { if (!r.ok) throw new Error('Upload echoue'); return SURL + '/storage/v1/object/public/' + BUCKET + '/' + path; });
 }
-
-function sbInsertMedia(d) {
-  return fetch(SURL + '/rest/v1/media', { method: 'POST', headers: Object.assign({}, SH, { 'Prefer': 'return=representation' }), body: JSON.stringify(d) }).then(function(r) { return r.json(); });
-}
-
-function sbGetMedia() {
-  return fetch(SURL + '/rest/v1/media?order=created_at.desc', { headers: SH }).then(function(r) { return r.json(); });
-}
-
+function sbInsertMedia(d) { return fetch(SURL + '/rest/v1/media', { method: 'POST', headers: Object.assign({}, SH, { 'Prefer': 'return=representation' }), body: JSON.stringify(d) }).then(function(r) { return r.json(); }); }
+function sbGetMedia() { return fetch(SURL + '/rest/v1/media?order=created_at.desc', { headers: SH }).then(function(r) { return r.json(); }); }
 function sbDeleteMedia(id, url) {
   var path = url.split('/object/public/' + BUCKET + '/')[1];
   return fetch(SURL + '/storage/v1/object/' + BUCKET + '/' + path, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + SKEY, 'apikey': SKEY } }).then(function() {
     return fetch(SURL + '/rest/v1/media?id=eq.' + id, { method: 'DELETE', headers: SH });
   });
 }
-
-function sbInsertContent(d) {
-  return fetch(SURL + '/rest/v1/generated_content', { method: 'POST', headers: Object.assign({}, SH, { 'Prefer': 'return=representation' }), body: JSON.stringify(d) }).then(function(r) { return r.json(); });
-}
-
-function sbGetPlanning() {
-  return fetch(SURL + '/rest/v1/planning?order=created_at.asc', { headers: SH }).then(function(r) { return r.json(); });
-}
-
-function sbInsertPlanning(d) {
-  return fetch(SURL + '/rest/v1/planning', { method: 'POST', headers: Object.assign({}, SH, { 'Prefer': 'return=representation' }), body: JSON.stringify(d) }).then(function(r) { return r.json(); });
-}
+function sbInsertContent(d) { return fetch(SURL + '/rest/v1/generated_content', { method: 'POST', headers: Object.assign({}, SH, { 'Prefer': 'return=representation' }), body: JSON.stringify(d) }).then(function(r) { return r.json(); }); }
+function sbGetPlanning() { return fetch(SURL + '/rest/v1/planning?order=created_at.asc', { headers: SH }).then(function(r) { return r.json(); }); }
+function sbInsertPlanning(d) { return fetch(SURL + '/rest/v1/planning', { method: 'POST', headers: Object.assign({}, SH, { 'Prefer': 'return=representation' }), body: JSON.stringify(d) }).then(function(r) { return r.json(); }); }
 
 var CAPTIONS_BRUT = [
   "Sur scene. Pas de filtre. Juste la musique et l energie de la salle.\n\nCooker Music. 🎧",
   "Le son qui fait bouger la salle.\n\nDrop a minuit. T etais la ? 🔊",
-  "Aucun plan. Juste le feeling.\n\nSet improvise, salle blindee. Voila comment ca se passe. 🖤"
+  "Aucun plan. Juste le feeling.\n\nSet improvise, salle blindee. 🖤"
 ];
 var CAPTIONS_HYPE = [
-  "LA NUIT QUI DECHIRE TOUT. ⚡\n\nQuand le drop arrive a 2h du mat et que toute la salle explose. RIEN ne bat ce feeling.\n\nCooker Music 🔥🔥🔥",
+  "LA NUIT QUI DECHIRE TOUT. ⚡\n\nQuand le drop arrive a 2h du mat et que toute la salle explose.\n\nCooker Music 🔥🔥🔥",
   "SET DE FOLIE. 🚨\n\nLa foule. Les lumieres. Le son qui te traverse.\n\nC EST CA LA NUIT. 🎶⚡",
-  "ILS ETAIENT PRETS. TOI AUSSI T ETAIS LA ?\n\nUne nuit comme ca, ca se raconte pas, ca se vit. 🔥\n\nNext date bientot. Stay tuned. 👀"
+  "ILS ETAIENT PRETS. TOI AUSSI T ETAIS LA ?\n\nUne nuit comme ca, ca se raconte pas, ca se vit. 🔥"
 ];
 var CAPTIONS_EDITORIAL = [
-  "Il y a des nuits qui laissent une trace.\n\nLumieres tamisees, son cristallin, foule presente. Ce moment suspendu entre le set et l aube.\n\nCooker Music. ✦",
+  "Il y a des nuits qui laissent une trace.\n\nLumieres tamisees, son cristallin, foule presente.\n\nCooker Music. ✦",
   "Quelques secondes capturees entre deux drops.\n\nL elegance ne se force pas. Elle se ressent. 🖤",
-  "Le DJ booth comme second chez-soi.\n\nChaque set est une conversation avec la salle. Juste le son qui dit tout.\n\nCooker Music ✦"
+  "Le DJ booth comme second chez-soi.\n\nChaque set est une conversation avec la salle. ✦"
 ];
 var CAPTIONS_BTS = [
-  "Ce que vous ne voyez pas depuis la piste.\n\nLe setup, la concentration, les 20 minutes avant d ouvrir les portes. Ce rituel, c est le mien. 🎧",
-  "Behind the decks.\n\nAvant que la salle se remplisse, il y a ce moment de silence. Je me connecte au son. 🖤",
-  "Coulisses.\n\nOn parle rarement de ce qui se passe avant. La preparation, les tracklists, les ajustements. Ce soir, tout etait parfait. ✦"
+  "Ce que vous ne voyez pas depuis la piste.\n\nLe setup, la concentration, les 20 minutes avant. Ce rituel, c est le mien. 🎧",
+  "Behind the decks.\n\nAvant que la salle se remplisse, il y a ce moment de silence. 🖤",
+  "Coulisses.\n\nLa preparation, les tracklists, les ajustements. Ce soir, tout etait parfait. ✦"
 ];
-
 var HASHTAGS = '#djlife #housemusic #discohouse #electromusic #dj #djset #nightlife #paris #clubbing #musicproducer #rave #dancemusic #underground #techno #deephouse #djbooth #pioneerdj #festival #livemusic #musiclover #instadj #djculture #parisbynight #setlife #booknow #djagency #musicislife #frenchhouse #groovemusic #djworld';
-
 var BRIEFS = {
-  post: "1. HOOK (0-2s) : Coupe directe sur le moment fort, drop ou foule.\n2. MONTAGE : Cuts rythmes sur les beats, 1 coupe toutes les 2 secondes.\n3. MUSIQUE : Extrait du set joue ce soir, volume fort.\n4. TEXTE : Lieu + date en bas, police blanche fine.\n5. AMBIANCE : Contraste eleve, tons chauds orange violet.",
-  story: "1. HOOK (0-1s) : Action immediate, main sur les platines ou foule.\n2. MONTAGE : 3-4 cuts max, format vertical 9:16, duree 15s.\n3. MUSIQUE : Son du set en fond, volume modere.\n4. TEXTE : Sticker lieu en haut, CTA en bas.\n5. AMBIANCE : Filtre warm, vignette douce.",
-  carousel: "1. SLIDE 1 : Photo la plus impactante pour donner envie de swiper.\n2. SLIDES 2-4 : Setup, action, reaction foule.\n3. SLIDE FINAL : Citation courte ou prochaine date.\n4. COHERENCE : Meme filtre sur toutes les slides.\n5. FORMAT : Carre 1:1 ou portrait 4:5.",
-  scratch: "1. CONCEPT : Liberte totale, surprendre pas documenter.\n2. MONTAGE : Slow motion, time-lapse ou split screen.\n3. MUSIQUE : Choix artistique personnel.\n4. TEXTE : Optionnel, integre comme element graphique.\n5. AMBIANCE : Noir et blanc ou couleurs saturees a fond."
+  post: "1. HOOK (0-2s) : Coupe directe sur le moment fort.\n2. MONTAGE : Cuts rythmes sur les beats.\n3. MUSIQUE : Extrait du set, volume fort.\n4. TEXTE : Lieu + date en bas, police blanche.\n5. AMBIANCE : Contraste eleve, tons chauds.",
+  story: "1. HOOK (0-1s) : Action immediate.\n2. MONTAGE : 3-4 cuts max, format 9:16, 15s.\n3. MUSIQUE : Son du set en fond.\n4. TEXTE : Sticker lieu en haut, CTA en bas.\n5. AMBIANCE : Filtre warm, vignette douce.",
+  carousel: "1. SLIDE 1 : Photo la plus impactante.\n2. SLIDES 2-4 : Setup, action, reaction foule.\n3. SLIDE FINAL : Citation ou prochaine date.\n4. COHERENCE : Meme filtre sur toutes les slides.\n5. FORMAT : Carre 1:1 ou portrait 4:5.",
+  scratch: "1. CONCEPT : Liberte totale.\n2. MONTAGE : Slow motion ou split screen.\n3. MUSIQUE : Choix artistique personnel.\n4. TEXTE : Element graphique optionnel.\n5. AMBIANCE : Noir et blanc ou couleurs saturees."
 };
 
 var selectedMedia = null;
@@ -399,16 +433,11 @@ var selectedFormat = 'post';
 var mediaList = [];
 
 document.addEventListener('DOMContentLoaded', function() {
-  setupNav();
-  setupDropZone();
-  setupFormatBtns();
-  loadMedia();
-  loadPlanning();
+  setupNav(); setupDropZone(); setupFormatBtns(); loadMedia(); loadPlanning(); loadIgSettings();
 });
 
 function setupNav() {
-  var btns = document.querySelectorAll('.nav-item');
-  btns.forEach(function(btn) {
+  document.querySelectorAll('.nav-item').forEach(function(btn) {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.nav-item').forEach(function(b) { b.classList.remove('active'); });
       document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
@@ -423,24 +452,15 @@ function loadMedia() {
   grid.innerHTML = '<div class="loading-state">Chargement...</div>';
   sbGetMedia().then(function(list) {
     mediaList = list;
-    if (!Array.isArray(list) || !list.length) {
-      grid.innerHTML = '<div class="empty-state"><p>Aucun media. Glisse tes fichiers ci-dessus.</p></div>';
-      return;
-    }
+    if (!Array.isArray(list) || !list.length) { grid.innerHTML = '<div class="empty-state"><p>Aucun media. Glisse tes fichiers ci-dessus.</p></div>'; return; }
     grid.innerHTML = list.map(function(m) {
       var isV = m.type === 'video';
       var thumb = isV ? '<video src="' + m.url + '" class="media-thumb" preload="metadata" muted></video>' : '<img src="' + m.url + '" class="media-thumb" alt="' + m.name + '">';
       return '<div class="media-card" data-id="' + m.id + '"><div class="media-thumb-wrap">' + thumb + '<div class="media-overlay"><div class="select-ring"></div>' + (isV ? '<span class="video-badge">&#9654;</span>' : '') + '</div><button class="delete-btn" data-id="' + m.id + '" data-url="' + m.url + '">x</button></div><div class="media-info"><span class="media-name">' + m.name + '</span><span class="media-type">' + (isV ? 'Video' : 'Photo') + '</span></div></div>';
     }).join('');
-    grid.querySelectorAll('.media-card').forEach(function(c) {
-      c.addEventListener('click', function() { selectMedia(c.dataset.id); });
-    });
-    grid.querySelectorAll('.delete-btn').forEach(function(b) {
-      b.addEventListener('click', function(e) { e.stopPropagation(); deleteMedia(b.dataset.id, b.dataset.url); });
-    });
-  }).catch(function() {
-    grid.innerHTML = '<div class="empty-state"><p>Erreur Supabase. Verifie la configuration.</p></div>';
-  });
+    grid.querySelectorAll('.media-card').forEach(function(c) { c.addEventListener('click', function() { selectMedia(c.dataset.id); }); });
+    grid.querySelectorAll('.delete-btn').forEach(function(b) { b.addEventListener('click', function(e) { e.stopPropagation(); deleteMedia(b.dataset.id, b.dataset.url); }); });
+  }).catch(function() { grid.innerHTML = '<div class="empty-state"><p>Erreur Supabase.</p></div>'; });
 }
 
 function selectMedia(id) {
@@ -451,17 +471,12 @@ function selectMedia(id) {
   if (selectedMedia) {
     var isV = selectedMedia.type === 'video';
     box.innerHTML = isV ? '<video src="' + selectedMedia.url + '" style="height:48px;border-radius:6px" muted></video><span>' + selectedMedia.name + '</span>' : '<img src="' + selectedMedia.url + '" style="height:48px;border-radius:6px;object-fit:cover"><span>' + selectedMedia.name + '</span>';
-  } else {
-    box.innerHTML = '<span class="no-media-text">Aucun media selectionne</span>';
-  }
+  } else { box.innerHTML = '<span class="no-media-text">Aucun media selectionne</span>'; }
 }
 
 function deleteMedia(id, url) {
   if (!confirm('Supprimer ce media ?')) return;
-  sbDeleteMedia(id, url).then(function() {
-    if (selectedMedia && selectedMedia.id === id) selectedMedia = null;
-    loadMedia();
-  });
+  sbDeleteMedia(id, url).then(function() { if (selectedMedia && selectedMedia.id === id) selectedMedia = null; loadMedia(); });
 }
 
 function setupDropZone() {
@@ -486,23 +501,13 @@ function handleFiles(files) {
       zone.innerHTML = '<div class="drop-inner"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" opacity=".4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><p class="drop-title">Glisse tes fichiers ici</p><p class="drop-sub">JPG, PNG, MP4, MOV ou <span class="link-text" id="browse-trigger">parcourir</span></p></div><input type="file" id="file-input" accept="image/,video/" multiple hidden>';
       document.getElementById('browse-trigger').addEventListener('click', function() { document.getElementById('file-input').click(); });
       document.getElementById('file-input').addEventListener('change', function(e) { handleFiles(e.target.files); });
-      loadMedia();
-      return;
+      loadMedia(); return;
     }
-    var file = arr[idx];
-    idx++;
+    var file = arr[idx]; idx++;
     sbUpload(file).then(function(url) {
       var type = file.type.indexOf('video') >= 0 ? 'video' : 'photo';
       return sbInsertMedia({ name: file.name.replace(/\.[^.]+$/, ''), type: type, url: url, context: '' });
-    }).then(function() {
-      done++;
-      var title = zone.querySelector('.drop-title');
-      if (title) title.textContent = 'Upload en cours... ' + done + '/' + total;
-      next();
-    }).catch(function(err) {
-      console.error(err);
-      next();
-    });
+    }).then(function() { done++; var t = zone.querySelector('.drop-title'); if (t) t.textContent = 'Upload en cours... ' + done + '/' + total; next(); }).catch(function(err) { console.error(err); next(); });
   }
   next();
 }
@@ -511,8 +516,7 @@ function setupFormatBtns() {
   document.querySelectorAll('.format-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.format-btn').forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      selectedFormat = btn.dataset.fmt;
+      btn.classList.add('active'); selectedFormat = btn.dataset.fmt;
     });
   });
 }
@@ -521,8 +525,7 @@ function generateContent() {
   var btn = document.getElementById('gen-btn');
   var extra = document.getElementById('extra-context').value.trim();
   var tone = document.getElementById('tone-select').value;
-  btn.disabled = true;
-  btn.textContent = 'Generation en cours...';
+  btn.disabled = true; btn.textContent = 'Generation en cours...';
   document.getElementById('output-section').style.display = 'none';
   document.getElementById('output-empty').style.display = 'flex';
   setTimeout(function() {
@@ -536,11 +539,8 @@ function generateContent() {
     document.getElementById('brief-out').textContent = brief;
     document.getElementById('output-section').style.display = 'block';
     document.getElementById('output-empty').style.display = 'none';
-    if (selectedMedia) {
-      sbInsertContent({ media_id: selectedMedia.id, format: selectedFormat, caption: caption, hashtags: hashtags, brief: brief, tone: tone }).catch(function() {});
-    }
-    btn.disabled = false;
-    btn.textContent = 'Generer le contenu';
+    if (selectedMedia) { sbInsertContent({ media_id: selectedMedia.id, format: selectedFormat, caption: caption, hashtags: hashtags, brief: brief, tone: tone }).catch(function() {}); }
+    btn.disabled = false; btn.textContent = 'Generer le contenu';
   }, 600);
 }
 
@@ -556,33 +556,17 @@ function addToPlanning() {
   var day = prompt('Quel jour ? (ex: Lundi, Mardi...)');
   if (!day) return;
   var caption = document.getElementById('caption-out').textContent;
-  sbInsertContent({
-    media_id: selectedMedia ? selectedMedia.id : null,
-    format: selectedFormat,
-    caption: caption,
-    hashtags: document.getElementById('hashtags-out').textContent,
-    brief: document.getElementById('brief-out').textContent,
-    tone: document.getElementById('tone-select').value
-  }).then(function(saved) {
-    return sbInsertPlanning({ day: day, content_type: selectedFormat, content_id: saved && saved[0] ? saved[0].id : null, note: caption.slice(0, 80) });
-  }).then(function() {
-    alert('Ajoute au planning : ' + day);
-    loadPlanning();
-  }).catch(function() {
-    alert('Erreur lors de l ajout au planning');
-  });
+  sbInsertContent({ media_id: selectedMedia ? selectedMedia.id : null, format: selectedFormat, caption: caption, hashtags: document.getElementById('hashtags-out').textContent, brief: document.getElementById('brief-out').textContent, tone: document.getElementById('tone-select').value })
+  .then(function(saved) { return sbInsertPlanning({ day: day, content_type: selectedFormat, content_id: saved && saved[0] ? saved[0].id : null, note: caption.slice(0, 80) }); })
+  .then(function() { alert('Ajoute au planning : ' + day); loadPlanning(); })
+  .catch(function() { alert('Erreur ajout planning'); });
 }
 
 function loadPlanning() {
   var grid = document.getElementById('week-grid');
   sbGetPlanning().then(function(items) {
-    if (!Array.isArray(items) || !items.length) {
-      grid.innerHTML = '<div class="empty-state"><p>Aucun post planifie. Genere du contenu et clique Ajouter au planning.</p></div>';
-      return;
-    }
-    grid.innerHTML = items.map(function(p) {
-      return '<div class="day-card"><div class="day-label">' + p.day + '</div><div class="day-type">' + p.content_type + '</div><p class="day-note">' + (p.note || '') + '</p></div>';
-    }).join('');
+    if (!Array.isArray(items) || !items.length) { grid.innerHTML = '<div class="empty-state"><p>Aucun post planifie.</p></div>'; return; }
+    grid.innerHTML = items.map(function(p) { return '<div class="day-card"><div class="day-label">' + p.day + '</div><div class="day-type">' + p.content_type + '</div><p class="day-note">' + (p.note || '') + '</p></div>'; }).join('');
   }).catch(function() {});
 }
 
@@ -592,8 +576,7 @@ function generateWeekPlan() {
   var idx = 0;
   function next() {
     if (idx >= days.length) { alert('Planning genere !'); loadPlanning(); return; }
-    var caps = CAPTIONS_BRUT;
-    var note = caps[Math.floor(Math.random() * caps.length)].slice(0, 80);
+    var note = CAPTIONS_BRUT[Math.floor(Math.random() * CAPTIONS_BRUT.length)].slice(0, 80);
     sbInsertPlanning({ day: days[idx], content_type: types[idx], note: note }).then(function() { idx++; next(); }).catch(function() { idx++; next(); });
   }
   next();
@@ -607,6 +590,59 @@ function updateFollowers() {
   var circ = 2 * Math.PI * 24;
   document.getElementById('ring-fill').style.strokeDasharray = (circ * pct / 100) + ' ' + circ;
   document.getElementById('ring-pct').textContent = pct + '%';
+}
+
+function saveIgSettings() {
+  var token = document.getElementById('ig-token-input').value.trim();
+  var accountId = document.getElementById('ig-account-input').value.trim();
+  if (!token || !accountId) { alert('Remplis les deux champs'); return; }
+  localStorage.setItem('ig_token', token);
+  localStorage.setItem('ig_account_id', accountId);
+  updateIgStatus(true);
+  alert('Parametres Instagram sauvegardes !');
+}
+
+function loadIgSettings() {
+  var token = localStorage.getItem('ig_token');
+  var accountId = localStorage.getItem('ig_account_id');
+  if (token) document.getElementById('ig-token-input').value = token;
+  if (accountId) document.getElementById('ig-account-input').value = accountId;
+  updateIgStatus(!!(token && accountId));
+}
+
+function updateIgStatus(connected) {
+  var dot = document.getElementById('ig-dot');
+  var txt = document.getElementById('ig-status-text');
+  if (connected) { dot.className = 'status-dot connected'; txt.textContent = 'Instagram connecte'; }
+  else { dot.className = 'status-dot'; txt.textContent = 'Non configure'; }
+}
+
+function publishToInstagram() {
+  var token = localStorage.getItem('ig_token');
+  var accountId = localStorage.getItem('ig_account_id');
+  if (!token || !accountId) { alert('Configure Instagram dans Parametres'); document.querySelectorAll('.nav-item').forEach(function(b) { b.classList.remove('active'); }); document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); }); document.querySelector('[data-screen="settings"]').classList.add('active'); document.getElementById('screen-settings').classList.add('active'); return; }
+  if (!selectedMedia) { alert('Selectionne un media dans la bibliotheque'); return; }
+  var caption = document.getElementById('caption-out').textContent;
+  var hashtags = document.getElementById('hashtags-out').textContent;
+  var fullCaption = caption + '\n\n' + hashtags;
+  var btn = document.getElementById('ig-btn');
+  btn.disabled = true; btn.textContent = 'Publication en cours...';
+  var isVideo = selectedMedia.type === 'video';
+  var mediaParam = isVideo ? 'video_url' : 'image_url';
+  var extraParam = isVideo ? '&media_type=REELS' : '';
+  fetch('https://graph.facebook.com/v18.0/' + accountId + '/media?caption=' + encodeURIComponent(fullCaption) + '&' + mediaParam + '=' + encodeURIComponent(selectedMedia.url) + extraParam + '&access_token=' + token, { method: 'POST' })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.error) { alert('Erreur Instagram : ' + data.error.message); btn.disabled = false; btn.textContent = 'Publier sur Instagram'; return; }
+    var creationId = data.id;
+    return fetch('https://graph.facebook.com/v18.0/' + accountId + '/media_publish?creation_id=' + creationId + '&access_token=' + token, { method: 'POST' });
+  })
+  .then(function(r) { if (r) return r.json(); })
+  .then(function(data) {
+    if (data && data.id) { alert('Publie sur Instagram !'); }
+    btn.disabled = false; btn.textContent = 'Publier sur Instagram';
+  })
+  .catch(function(err) { alert('Erreur : ' + err.message); btn.disabled = false; btn.textContent = 'Publier sur Instagram'; });
 }
 </script>
 </body>
