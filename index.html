@@ -7,7 +7,145 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0a0a; --surface: #111111; --surface2: #1a1a1a; --surface3: #222222;
+  --border: rgba(255,255,255,.08); --border2: rgba(255,255,255,.14);
+  --text: #f0f0f0; --text2: #888; --text3: #555;
+  --accent: #c8ff4a; --accent-dim: rgba(200,255,74,.12); --accent-text: #0a0a0a;
+  --danger: #ff5050; --danger-dim: rgba(255,80,80,.12);
+  --warning: #f59e0b; --warning-dim: rgba(245,158,11,.12);
+  --success: #34d399; --success-dim: rgba(52,211,153,.12);
+  --blue: #60a5fa; --blue-dim: rgba(96,165,250,.12);
+  --radius: 10px; --radius-lg: 16px; --sidebar-w: 220px;
+}
+html { font-size: 15px; }
+body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; line-height: 1.5; }
+.sidebar { width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 1.5rem 1rem; position: fixed; top: 0; left: 0; bottom: 0; z-index: 10; }
+.logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; padding: 0 4px; }
+.logo-mark { width: 32px; height: 32px; background: var(--accent); color: var(--accent-text); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; flex-shrink: 0; }
+.logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
+.nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: none; background: none; color: var(--text2); border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; text-align: left; transition: background .15s, color .15s; width: 100%; }
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-item svg { flex-shrink: 0; }
+.sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+.profile-chip { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text2); }
+.profile-avatar { width: 28px; height: 28px; background: var(--surface3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--text); flex-shrink: 0; }
+.main { margin-left: var(--sidebar-w); flex: 1; padding: 2.5rem 2rem; max-width: 1000px; }
+.screen { display: none; }
+.screen.active { display: block; }
+.screen-header { margin-bottom: 2rem; }
+.screen-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em; margin-bottom: .25rem; }
+.screen-header p { color: var(--text2); font-size: .9rem; }
+.section-title { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; margin: 1.75rem 0 1rem; }
+.drop-zone { border: 1.5px dashed var(--border2); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; margin-bottom: 1.5rem; }
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: var(--accent-dim); }
+.drop-inner { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+.drop-title { font-weight: 500; font-size: .95rem; }
+.drop-sub { font-size: .85rem; color: var(--text2); }
+.link-text { color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 1rem; }
+.media-card { cursor: pointer; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--border); transition: border-color .15s; }
+.media-card:hover { border-color: var(--border2); }
+.media-card.selected { border-color: var(--accent); }
+.media-thumb-wrap { aspect-ratio: 1; position: relative; background: var(--surface2); }
+.media-thumb { width: 100%; height: 100%; object-fit: cover; }
+.media-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .15s; }
+.media-card:hover .media-overlay, .media-card.selected .media-overlay { opacity: 1; }
+.select-ring { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; }
+.media-card.selected .select-ring { background: var(--accent); border-color: var(--accent); }
+.media-card.selected .select-ring::after { content: ''; width: 10px; height: 6px; border-left: 2px solid #000; border-bottom: 2px solid #000; transform: rotate(-45deg) translateY(-1px); display: block; }
+.video-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,.6); color: #fff; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 12px; pointer-events: none; }
+.delete-btn { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,.7); border: none; color: #fff; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 11px; display: none; align-items: center; justify-content: center; }
+.media-card:hover .delete-btn { display: flex; }
+.media-info { padding: 8px 10px; background: var(--surface); display: flex; flex-direction: column; gap: 2px; }
+.media-name { font-size: .8rem; font-weight: 500; }
+.media-type { font-size: .72rem; color: var(--text2); }
+.hint-text { font-size: .82rem; color: var(--text3); }
+.hint-text strong { color: var(--text2); }
+.loading-state, .empty-state { grid-column: 1/-1; padding: 2rem; text-align: center; opacity: .5; font-size: .9rem; }
+.gen-layout { display: grid; grid-template-columns: 340px 1fr; gap: 1.5rem; align-items: start; }
+.field-group { margin-bottom: 1.25rem; }
+.field-label { display: block; font-size: .78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text2); margin-bottom: .5rem; }
+.format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.format-btn { display: flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1.5px solid var(--border2); border-radius: var(--radius); background: var(--surface2); color: var(--text2); font-size: .82rem; font-weight: 500; cursor: pointer; transition: border-color .15s, color .15s, background .15s; }
+.format-btn:hover { color: var(--text); }
+.format-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.selected-media-box { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius); font-size: .85rem; min-height: 44px; }
+.no-media-text { color: var(--text2); font-size: .82rem; }
+textarea, select, input[type=number] { width: 100%; background: var(--surface2); border: 1.5px solid var(--border2); border-radius: var(--radius); color: var(--text); font-family: 'Inter', sans-serif; font-size: .9rem; padding: 10px 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
+textarea:focus, select:focus, input:focus { border-color: var(--accent); }
+textarea { resize: vertical; line-height: 1.5; }
+select { cursor: pointer; }
+.btn-primary { display: inline-flex; align-items: center; gap: 7px; padding: 11px 20px; background: var(--accent); color: var(--accent-text); border: none; border-radius: var(--radius); font-size: .88rem; font-weight: 600; cursor: pointer; width: 100%; justify-content: center; transition: opacity .15s, transform .1s; }
+.btn-primary:hover { opacity: .9; }
+.btn-primary:active { transform: scale(.98); }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+.btn-primary.btn-sm { width: auto; padding: 8px 16px; font-size: .82rem; }
+.btn-secondary { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; background: var(--surface2); color: var(--text); border: 1.5px solid var(--border2); border-radius: var(--radius); font-size: .85rem; font-weight: 500; cursor: pointer; transition: background .15s; }
+.btn-secondary:hover { background: var(--surface3); }
+.output-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.output-field { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); }
+.output-label { display: flex; justify-content: space-between; align-items: center; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text2); margin-bottom: .5rem; }
+.copy-btn { padding: 3px 10px; border: 1px solid var(--border2); border-radius: 6px; background: var(--surface2); color: var(--text2); font-size: .75rem; cursor: pointer; transition: color .15s; font-weight: 400; }
+.copy-btn:hover { color: var(--text); }
+.output-content { font-size: .88rem; line-height: 1.65; color: var(--text); white-space: pre-wrap; min-height: 36px; }
+.output-actions { display: flex; gap: 8px; padding: 1rem 1.25rem; background: var(--surface2); border-top: 1px solid var(--border); }
+.output-actions .btn-primary { flex: 1; }
+.output-actions .btn-secondary { flex-shrink: 0; }
+.output-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px; gap: 1rem; color: var(--text3); font-size: .88rem; border: 1px dashed var(--border); border-radius: var(--radius-lg); }
+.week-grid { display: flex; flex-direction: column; gap: 6px; }
+.day-card { padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.day-label { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .8rem; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.day-type { font-size: .78rem; color: var(--text2); margin-bottom: 4px; }
+.day-note { font-size: .85rem; color: var(--text); }
+.stats-top { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; margin-bottom: 1.5rem; align-items: start; }
+.big-stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
+.big-stat-inner { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.big-stat-label { font-size: .75rem; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; margin-bottom: 4px; }
+.big-stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: -.03em; line-height: 1; margin-bottom: 4px; }
+.big-stat-delta { font-size: .8rem; color: var(--text2); }
+.progress-ring-wrap { position: relative; width: 60px; height: 60px; }
+.progress-ring { width: 60px; height: 60px; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: var(--surface3); stroke-width: 4; }
+.ring-fill { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; transition: stroke-dasharray .6s; }
+.ring-pct { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 600; color: var(--accent); }
+.update-row { display: flex; gap: 8px; align-items: center; }
+.update-row input { flex: 1; }
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+.kpi-label { font-size: .75rem; color: var(--text2); font-weight: 500; margin-bottom: 4px; }
+.kpi-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 4px; }
+.kpi-value.danger { color: var(--danger); }
+.kpi-value.warning { color: var(--warning); }
+.kpi-target { font-size: .75rem; color: var(--text3); }
+.bars-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 14px; }
+.bar-row { display: grid; grid-template-columns: 1fr 140px 40px; gap: 10px; align-items: center; }
+.bar-label { font-size: .82rem; color: var(--text2); }
+.bar-track { height: 6px; background: var(--surface3); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width .6s; }
+.bar-fill.success { background: var(--success); }
+.bar-fill.accent { background: var(--blue); }
+.bar-fill.warning { background: var(--warning); }
+.bar-fill.danger { background: var(--danger); }
+.bar-val { font-size: .82rem; font-weight: 600; text-align: right; }
+.insight-box { display: flex; gap: 10px; align-items: flex-start; background: var(--blue-dim); border: 1px solid rgba(96,165,250,.2); border-radius: var(--radius); padding: 12px 16px; margin-top: 1rem; font-size: .85rem; color: var(--text2); line-height: 1.5; }
+.insight-box svg { flex-shrink: 0; margin-top: 1px; color: var(--blue); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin .8s linear infinite; }
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; }
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 1rem; }
+  .gen-layout { grid-template-columns: 1fr; }
+  .stats-top { grid-template-columns: 1fr; }
+  .bar-row { grid-template-columns: 1fr 80px 36px; }
+  .media-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+}
+</style>
 </head>
 <body>
 
@@ -44,162 +182,49 @@
 
 <main class="main">
 
-  <!-- MEDIA -->
   <section id="screen-media" class="screen active">
     <div class="screen-header">
       <h1>Bibliothèque de médias</h1>
       <p>Importe tes photos et vidéos pour alimenter le générateur</p>
     </div>
-
     <div class="drop-zone" id="drop-zone">
       <div class="drop-inner">
         <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" opacity=".4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <p class="drop-title">Glisse tes fichiers ici</p>
         <p class="drop-sub">JPG, PNG, MP4, MOV — ou <span class="link-text" id="browse-trigger">parcourir</span></p>
       </div>
-      <input type="file" id="file-input" accept="image/*,video/*" multiple hidden>
+      <input type="file" id="file-input" accept="image/,video/" multiple hidden>
     </div>
-
-    <div class="media-grid" id="media-grid">
-      <!-- Médias de démo -->
-      <div class="media-card" data-id="d1" data-ctx="Portrait professionnel en soirée, look dark avec casque autour du cou, lumière de scène chaude, platines Pioneer en avant-plan">
-        <div class="media-thumb-wrap">
-          <div class="media-placeholder portrait">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-          </div>
-          <div class="media-overlay">
-            <div class="select-ring"></div>
-          </div>
-        </div>
-        <div class="media-info">
-          <span class="media-name">Portrait set</span>
-          <span class="media-type">Photo</span>
-        </div>
-      </div>
-
-      <div class="media-card" data-id="d2" data-ctx="Reel depuis la scène du Zénith de Paris, foule de 5000 personnes de dos depuis les platines, lumières de scène violette et rose, son disco house">
-        <div class="media-thumb-wrap">
-          <div class="media-placeholder scene">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-          </div>
-          <div class="media-overlay">
-            <div class="select-ring"></div>
-          </div>
-        </div>
-        <div class="media-info">
-          <span class="media-name">Reel Zénith</span>
-          <span class="media-type">Vidéo</span>
-        </div>
-      </div>
-
-      <div class="media-card" data-id="d3" data-ctx="Backstage avant ouverture, salle vide, setup platines en lumière de scène, ambiance coulisses, authenticité">
-        <div class="media-thumb-wrap">
-          <div class="media-placeholder backstage">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-          </div>
-          <div class="media-overlay">
-            <div class="select-ring"></div>
-          </div>
-        </div>
-        <div class="media-info">
-          <span class="media-name">Setup backstage</span>
-          <span class="media-type">Photo</span>
-        </div>
-      </div>
-
-      <div class="media-card" data-id="d4" data-ctx="Event Lacoste VIP Arena, toi en veste Lacoste verte derrière les platines Pioneer, décor prestige marque de luxe">
-        <div class="media-thumb-wrap">
-          <div class="media-placeholder brand">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </div>
-          <div class="media-overlay">
-            <div class="select-ring"></div>
-          </div>
-        </div>
-        <div class="media-info">
-          <span class="media-name">Lacoste event</span>
-          <span class="media-type">Photo</span>
-        </div>
-      </div>
-
-      <div class="media-card" data-id="d5" data-ctx="Scène Festival Polaris Suisse, panorama montagne enneigée en arrière-plan, set en extérieur, ambiance festival de prestige">
-        <div class="media-thumb-wrap">
-          <div class="media-placeholder festival">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="3 17 7 7 12 15 15 10 21 17"/></svg>
-          </div>
-          <div class="media-overlay">
-            <div class="select-ring"></div>
-          </div>
-        </div>
-        <div class="media-info">
-          <span class="media-name">Polaris Festival</span>
-          <span class="media-type">Photo</span>
-        </div>
-      </div>
-
-      <div class="media-card" data-id="d6" data-ctx="Session studio, production musicale, DAW visible sur écran, ambiance nocturne, process créatif">
-        <div class="media-thumb-wrap">
-          <div class="media-placeholder studio">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          </div>
-          <div class="media-overlay">
-            <div class="select-ring"></div>
-          </div>
-        </div>
-        <div class="media-info">
-          <span class="media-name">Studio session</span>
-          <span class="media-type">Photo</span>
-        </div>
-      </div>
-    </div>
-
+    <div class="media-grid" id="media-grid"></div>
     <p class="hint-text">Sélectionne un média, puis va dans <strong>Générer</strong> pour créer le contenu associé.</p>
   </section>
 
-  <!-- GENERATE -->
   <section id="screen-generate" class="screen">
     <div class="screen-header">
       <h1>Générateur de contenu</h1>
-      <p>L'IA crée la légende, les hashtags et le brief montage calibrés sur ton univers</p>
+      <p>Crée la légende, les hashtags et le brief montage calibrés sur ton univers</p>
     </div>
-
     <div class="gen-layout">
       <div class="gen-left">
         <div class="field-group">
           <label class="field-label">Format</label>
           <div class="format-grid">
-            <button class="format-btn active" data-fmt="post">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-              Post Reel
-            </button>
-            <button class="format-btn" data-fmt="story">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>
-              Story
-            </button>
-            <button class="format-btn" data-fmt="carousel">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="5" width="14" height="14" rx="2"/><path d="M18 7h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2"/></svg>
-              Carrousel
-            </button>
-            <button class="format-btn" data-fmt="scratch">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              De zéro
-            </button>
+            <button class="format-btn active" data-fmt="post"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Post Reel</button>
+            <button class="format-btn" data-fmt="story"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>Story</button>
+            <button class="format-btn" data-fmt="carousel"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="5" width="14" height="14" rx="2"/><path d="M18 7h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2"/></svg>Carrousel</button>
+            <button class="format-btn" data-fmt="scratch"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>De zéro</button>
           </div>
         </div>
-
         <div class="field-group">
           <label class="field-label">Média sélectionné</label>
           <div class="selected-media-box" id="selected-media-display">
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" opacity=".4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-            <span class="no-media-text">Aucun média — va dans Médias pour en sélectionner un, ou génère de zéro</span>
+            <span class="no-media-text">Aucun média — va dans Médias pour en sélectionner un</span>
           </div>
         </div>
-
         <div class="field-group">
           <label class="field-label">Contexte de la soirée / du moment</label>
-          <textarea id="extra-context" rows="3" placeholder="ex: La Démesure, samedi 3h du matin, salle blindée, son disco house, foule qui répond à chaque drop..."></textarea>
+          <textarea id="extra-context" rows="3" placeholder="ex: La Démesure, samedi 3h du matin, salle blindée, son disco house..."></textarea>
         </div>
-
         <div class="field-group">
           <label class="field-label">Ton préféré</label>
           <select id="tone-select">
@@ -209,48 +234,30 @@
             <option value="bts">Behind-the-scenes intime</option>
           </select>
         </div>
-
         <button class="btn-primary" id="gen-btn" onclick="generateContent()">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           Générer le contenu
         </button>
       </div>
-
       <div class="gen-right">
         <div class="output-block" id="output-section" style="display:none">
           <div class="output-field">
-            <div class="output-label">
-              <span>Légende</span>
-              <button class="copy-btn" onclick="copyField('caption-out')">Copier</button>
-            </div>
+            <div class="output-label"><span>Légende</span><button class="copy-btn" onclick="copyField('caption-out')">Copier</button></div>
             <div class="output-content" id="caption-out"></div>
           </div>
           <div class="output-field">
-            <div class="output-label">
-              <span>Hashtags</span>
-              <button class="copy-btn" onclick="copyField('hashtags-out')">Copier</button>
-            </div>
+            <div class="output-label"><span>Hashtags</span><button class="copy-btn" onclick="copyField('hashtags-out')">Copier</button></div>
             <div class="output-content" id="hashtags-out"></div>
           </div>
           <div class="output-field">
-            <div class="output-label">
-              <span>Brief montage / visuel</span>
-              <button class="copy-btn" onclick="copyField('brief-out')">Copier</button>
-            </div>
+            <div class="output-label"><span>Brief montage / visuel</span><button class="copy-btn" onclick="copyField('brief-out')">Copier</button></div>
             <div class="output-content" id="brief-out"></div>
           </div>
           <div class="output-actions">
-            <button class="btn-secondary" onclick="generateContent()">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-              Regénérer
-            </button>
-            <button class="btn-primary" onclick="addToPlanning()">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
-              Ajouter au planning
-            </button>
+            <button class="btn-secondary" onclick="generateContent()"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Regénérer</button>
+            <button class="btn-primary" onclick="addToPlanning()"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Ajouter au planning</button>
           </div>
         </div>
-
         <div class="output-empty" id="output-empty">
           <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24" opacity=".2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           <p>Le contenu généré apparaîtra ici</p>
@@ -259,42 +266,35 @@
     </div>
   </section>
 
-  <!-- PLANNING -->
   <section id="screen-planning" class="screen">
     <div class="screen-header">
       <h1>Planning de la semaine</h1>
-      <p>1 story par jour · 1 post en milieu de semaine · basé sur tes 2-3 dates</p>
+      <p>1 story par jour · 1 post en milieu de semaine</p>
     </div>
-
-    <div class="week-grid" id="week-grid">
-      <!-- Généré par JS -->
-    </div>
-
+    <div class="week-grid" id="week-grid"></div>
     <button class="btn-secondary" style="margin-top:1rem" onclick="generateWeekPlan()">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      Générer un nouveau planning IA
+      Générer un nouveau planning
     </button>
   </section>
 
-  <!-- STATS -->
   <section id="screen-stats" class="screen">
     <div class="screen-header">
       <h1>Performances</h1>
-      <p>Saisis tes chiffres manuellement chaque semaine pour suivre ta progression</p>
+      <p>Saisis tes chiffres manuellement chaque semaine</p>
     </div>
-
     <div class="stats-top">
       <div class="big-stat-card">
         <div class="big-stat-inner">
           <div>
             <p class="big-stat-label">Followers</p>
             <p class="big-stat-value" id="disp-followers">1 115</p>
-            <p class="big-stat-delta" id="disp-delta">Objectif : 2 500</p>
+            <p class="big-stat-delta">Objectif : 2 500</p>
           </div>
           <div class="progress-ring-wrap">
             <svg viewBox="0 0 56 56" class="progress-ring">
               <circle cx="28" cy="28" r="24" class="ring-bg"/>
-              <circle cx="28" cy="28" r="24" class="ring-fill" id="ring-fill" style="stroke-dasharray:0 151"/>
+              <circle cx="28" cy="28" r="24" class="ring-fill" id="ring-fill" style="stroke-dasharray:68 151"/>
             </svg>
             <span class="ring-pct" id="ring-pct">45%</span>
           </div>
@@ -304,77 +304,244 @@
           <button class="btn-primary btn-sm" onclick="updateFollowers()">Mettre à jour</button>
         </div>
       </div>
-
       <div class="kpi-grid">
-        <div class="kpi-card">
-          <p class="kpi-label">Taux abandon moy.</p>
-          <p class="kpi-value danger">58%</p>
-          <p class="kpi-target">Objectif &lt;40%</p>
-        </div>
-        <div class="kpi-card">
-          <p class="kpi-label">% via Découvrir</p>
-          <p class="kpi-value warning">1,6%</p>
-          <p class="kpi-target">Objectif &gt;15%</p>
-        </div>
-        <div class="kpi-card">
-          <p class="kpi-label">Vues 30 jours</p>
-          <p class="kpi-value">34,7K</p>
-          <p class="kpi-target">Tableau de bord IG</p>
-        </div>
-        <div class="kpi-card">
-          <p class="kpi-label">Nouveaux followers</p>
-          <p class="kpi-value" id="new-followers-kpi">+0</p>
-          <p class="kpi-target">Ce mois</p>
-        </div>
+        <div class="kpi-card"><p class="kpi-label">Taux abandon moy.</p><p class="kpi-value danger">58%</p><p class="kpi-target">Objectif &lt;40%</p></div>
+        <div class="kpi-card"><p class="kpi-label">% via Découvrir</p><p class="kpi-value warning">1,6%</p><p class="kpi-target">Objectif &gt;15%</p></div>
+        <div class="kpi-card"><p class="kpi-label">Vues 30 jours</p><p class="kpi-value">34,7K</p><p class="kpi-target">Tableau de bord IG</p></div>
+        <div class="kpi-card"><p class="kpi-label">Nouveaux followers</p><p class="kpi-value">+0</p><p class="kpi-target">Ce mois</p></div>
       </div>
     </div>
-
     <h2 class="section-title">Meilleures sources de vues</h2>
     <div class="bars-card">
-      <div class="bar-row">
-        <span class="bar-label">Portrait Cannes — Fil</span>
-        <div class="bar-track"><div class="bar-fill success" style="width:74%"></div></div>
-        <span class="bar-val">74%</span>
-      </div>
-      <div class="bar-row">
-        <span class="bar-label">Lacoste VIP — Fil</span>
-        <div class="bar-track"><div class="bar-fill accent" style="width:50%"></div></div>
-        <span class="bar-val">50%</span>
-      </div>
-      <div class="bar-row">
-        <span class="bar-label">Reel Fête Musique — Découvrir</span>
-        <div class="bar-track"><div class="bar-fill warning" style="width:8%"></div></div>
-        <span class="bar-val">2,5%</span>
-      </div>
-      <div class="bar-row">
-        <span class="bar-label">Reel Zénith — Découvrir</span>
-        <div class="bar-track"><div class="bar-fill danger" style="width:3%"></div></div>
-        <span class="bar-val">0,8%</span>
-      </div>
+      <div class="bar-row"><span class="bar-label">Portrait Cannes — Fil</span><div class="bar-track"><div class="bar-fill success" style="width:74%"></div></div><span class="bar-val">74%</span></div>
+      <div class="bar-row"><span class="bar-label">Lacoste VIP — Fil</span><div class="bar-track"><div class="bar-fill accent" style="width:50%"></div></div><span class="bar-val">50%</span></div>
+      <div class="bar-row"><span class="bar-label">Reel Fête Musique — Découvrir</span><div class="bar-track"><div class="bar-fill warning" style="width:8%"></div></div><span class="bar-val">2,5%</span></div>
+      <div class="bar-row"><span class="bar-label">Reel Zénith — Découvrir</span><div class="bar-track"><div class="bar-fill danger" style="width:3%"></div></div><span class="bar-val">0,8%</span></div>
     </div>
-
     <h2 class="section-title">Taux d'abandon par post</h2>
     <div class="bars-card">
-      <div class="bar-row">
-        <span class="bar-label">Reel Zénith</span>
-        <div class="bar-track"><div class="bar-fill danger" style="width:67%"></div></div>
-        <span class="bar-val">67,7%</span>
-      </div>
-      <div class="bar-row">
-        <span class="bar-label">Reel Fête Musique</span>
-        <div class="bar-track"><div class="bar-fill warning" style="width:49%"></div></div>
-        <span class="bar-val">49,4%</span>
-      </div>
+      <div class="bar-row"><span class="bar-label">Reel Zénith</span><div class="bar-track"><div class="bar-fill danger" style="width:67%"></div></div><span class="bar-val">67,7%</span></div>
+      <div class="bar-row"><span class="bar-label">Reel Fête Musique</span><div class="bar-track"><div class="bar-fill warning" style="width:49%"></div></div><span class="bar-val">49,4%</span></div>
     </div>
-
     <div class="insight-box">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-      <p>Ton contenu original ne perce quasiment pas via Découvrir (&lt;3%). Priorité : hook visuel fort dans la première seconde pour passer sous 40% d'abandon.</p>
+      <p>Ton contenu original ne perce quasiment pas via Découvrir (&lt;3%). Priorité : hook visuel fort dans la première seconde.</p>
     </div>
   </section>
 
 </main>
 
-<script src="app.js"></script>
+<script>
+const SUPABASE_URL = 'https://vhovhcgrwaaizpsaggra.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZob3ZoY2dyd2FhaXpwc2FnZ3JhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5MDk4MjMsImV4cCI6MjA5ODQ4NTgyM30.PlU3JVFVIzZLECz3cWzSz56D37nneo52S1Jrkm_uSnQ';
+const BUCKET = 'cooker-media';
+const H = { 'Authorization': ⁠ Bearer ${SUPABASE_KEY} ⁠, 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' };
+
+const sb = {
+  async uploadFile(file) {
+    const path = ⁠ ${Date.now()}_${Math.random().toString(36).slice(2)}.${file.name.split('.').pop()} ⁠;
+    const res = await fetch(⁠ ${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path} ⁠, { method: 'POST', headers: { 'Authorization': ⁠ Bearer ${SUPABASE_KEY} ⁠, 'apikey': SUPABASE_KEY }, body: file });
+    if (!res.ok) throw new Error('Upload échoué');
+    return ⁠ ${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path} ⁠;
+  },
+  async insertMedia(d) { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/media ⁠, { method: 'POST', headers: { ...H, 'Prefer': 'return=representation' }, body: JSON.stringify(d) }); return r.json(); },
+  async getMedia() { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/media?order=created_at.desc ⁠, { headers: H }); return r.json(); },
+  async deleteMedia(id, url) {
+    const path = url.split(⁠ /object/public/${BUCKET}/ ⁠)[1];
+    await fetch(⁠ ${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path} ⁠, { method: 'DELETE', headers: { 'Authorization': ⁠ Bearer ${SUPABASE_KEY} ⁠, 'apikey': SUPABASE_KEY } });
+    await fetch(⁠ ${SUPABASE_URL}/rest/v1/media?id=eq.${id} ⁠, { method: 'DELETE', headers: H });
+  },
+  async insertContent(d) { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/generated_content ⁠, { method: 'POST', headers: { ...H, 'Prefer': 'return=representation' }, body: JSON.stringify(d) }); return r.json(); },
+  async getPlanning() { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/planning?order=created_at.asc ⁠, { headers: H }); return r.json(); },
+  async insertPlanning(d) { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/planning ⁠, { method: 'POST', headers: { ...H, 'Prefer': 'return=representation' }, body: JSON.stringify(d) }); return r.json(); }
+};
+
+const TEMPLATES = {
+  captions: {
+    brut: [
+      (m,c) => ⁠ ${c||'Sur scène.'} Pas de filtre, pas de mise en scène. Juste la musique et l'énergie de la salle.\n\nC'est ça, une nuit avec Cooker Music. 🎧 ⁠,
+      (m,c) => ⁠ ${m?m.name+'.':''} ${c||'Le son qui fait bouger la salle.'}\n\nDrop à minuit. T'étais là ? 🔊 ⁠,
+      (m,c) => ⁠ Aucun plan. Juste le feeling.\n\n${c||'Set improvisé, salle blindée.'} Voilà comment ça se passe quand la connexion est là. 🖤 ⁠,
+    ],
+    hype: [
+      (m,c) => ⁠ ⚡ ${c||'LA NUIT QUI DÉCHIRE TOUT.'}\n\nQuand le drop arrive à 2h du mat et que toute la salle explose — RIEN ne bat ce feeling.\n\nCooker Music 🔥🔥🔥 ⁠,
+      (m,c) => ⁠ 🚨 ${m?m.name.toUpperCase()+' —':''} ${c||'SET DE FOLIE.'}\n\nLa foule. Les lumières. Le son qui te traverse.\n\nC'EST ÇA LA NUIT. 🎶⚡ ⁠,
+      (m,c) => ⁠ ILS ÉTAIENT PRÊTS. TOI AUSSI T'ÉTAIS LÀ ?\n\n${c||'Une nuit comme ça, ça se raconte pas — ça se vit.'} 🔥\n\nNext date bientôt. Stay tuned. 👀 ⁠,
+    ],
+    editorial: [
+      (m,c) => ⁠ Il y a des nuits qui laissent une trace.\n\n${c||'Lumières tamisées, son cristallin, foule présente.'} Ce moment suspendu entre le set et l'aube — c'est pour ça qu'on fait ce métier.\n\nCooker Music ✦ ⁠,
+      (m,c) => ⁠ ${m?'"'+m.name+'"':'Une image.'} ${c||'Quelques secondes capturées entre deux drops.'}\n\nL'élégance ne se force pas. Elle se ressent. 🖤 ⁠,
+      (m,c) => ⁠ Le DJ booth comme second chez-soi.\n\n${c||'Chaque set est une conversation avec la salle.'} Pas de paroles — juste le son qui dit tout.\n\n✦ Cooker Music ⁠,
+    ],
+    bts: [
+      (m,c) => ⁠ Ce que vous ne voyez pas depuis la piste.\n\n${c||'Le setup, la concentration, les 20 minutes avant d\'ouvrir les portes.'} Ce rituel-là, c'est le mien depuis le début. 🎧 ⁠,
+      (m,c) => ⁠ Behind the decks.\n\n${c||'Avant que la salle se remplisse, il y a ce moment de silence.'} J'en profite pour me connecter au son, à l'espace, à ce qui va se passer. 🖤 ⁠,
+      (m,c) => ⁠ Coulisses.\n\n${c||'On parle rarement de ce qui se passe avant.'} La préparation, les tracklists, les derniers ajustements. Ce soir-là, tout était parfait. ✦ ⁠,
+    ]
+  },
+  hashtags: {
+    post: '#djlife #housemusic #discohouse #electromusic #dj #djset #nightlife #paris #clubbing #musicproducer #rave #dancemusic #underground #techno #deephouse #djbooth #pioneerdj #festival #livemusic #musiclover #instadj #djculture #parisbynight #setlife #booknow #djagency #musicislife #frenchhouse #groovemusic #djworld',
+    story: '#djlife #housemusic #paris #nightlife #djset #clubbing #discohouse #electromusic #dj #musicproducer #rave #dancemusic #djbooth #pioneerdj #musiclover #instadj #djculture #parisbynight #setlife #booknow #frenchhouse #groovemusic #djworld #underground #deephouse #techno #festival #livemusic #musicislife #djagency',
+    carousel: '#djlife #housemusic #discohouse #electromusic #paris #clubbing #djset #nightlife #musicproducer #dj #rave #dancemusic #underground #deephouse #djbooth #pioneerdj #musiclover #instadj #djculture #parisbynight #setlife #booknow #djagency #musicislife #frenchhouse #groovemusic #djworld #techno #festival #livemusic',
+    scratch: '#djlife #housemusic #discohouse #electromusic #paris #clubbing #nightlife #dj #djset #musicproducer #rave #dancemusic #underground #deephouse #djbooth #pioneerdj #musiclover #instadj #djculture #parisbynight #setlife #booknow #djagency #musicislife #frenchhouse #groovemusic #djworld #techno #festival #livemusic',
+  },
+  briefs: {
+    post: () => ⁠ 1. HOOK (0–2s) : Coupe directe sur le moment fort — drop, foule en délire ou regard caméra.\n2. MONTAGE : Cuts rythmés sur les beats, 1 coupe toutes les 1–2 secondes.\n3. MUSIQUE : Extrait du set joué ce soir-là, volume fort.\n4. TEXTE : Lieu + date en bas de frame, police fine blanche.\n5. AMBIANCE : Contraste élevé, tons chauds (orange/violet). ⁠,
+    story: () => ⁠ 1. HOOK (0–1s) : Démarre sur l'action — main sur les platines ou foule.\n2. MONTAGE : 3–4 cuts max, format vertical 9:16, durée 10–15s.\n3. MUSIQUE : Son du set en fond, volume modéré.\n4. TEXTE : Sticker lieu ou date en haut, CTA en bas.\n5. AMBIANCE : Filtre léger warm, vignette douce. ⁠,
+    carousel: () => ⁠ 1. SLIDE 1 : Photo la plus impactante — doit donner envie de swiper.\n2. SLIDES 2–4 : Progression narrative — setup, action, réaction foule.\n3. SLIDE FINAL : Citation courte ou CTA avec date.\n4. COHÉRENCE : Même filtre couleur sur toutes les slides.\n5. FORMAT : Carré 1:1 ou portrait 4:5. ⁠,
+    scratch: () => ⁠ 1. CONCEPT : Liberté créative totale — surprendre, pas documenter.\n2. MONTAGE : Expérimente slow motion, time-lapse ou split screen.\n3. MUSIQUE : Choix artistique personnel.\n4. TEXTE : Optionnel — intégré comme élément graphique.\n5. AMBIANCE : Prends un risque visuel : noir et blanc ou couleurs saturées. ⁠,
+  }
+};
+
+function generateTemplate(fmt, tone, media, extra) {
+  const caps = TEMPLATES.captions[tone] || TEMPLATES.captions.brut;
+  return {
+    caption: caps[Math.floor(Math.random() * caps.length)](media, extra),
+    hashtags: TEMPLATES.hashtags[fmt] || TEMPLATES.hashtags.post,
+    brief: (TEMPLATES.briefs[fmt] || TEMPLATES.briefs.post)()
+  };
+}
+
+let selectedMedia = null, selectedFormat = 'post', mediaList = [];
+
+document.addEventListener('DOMContentLoaded', () => { setupNav(); setupDropZone(); setupFormatBtns(); loadMedia(); loadPlanning(); });
+
+function setupNav() {
+  document.querySelectorAll('.nav-item').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(⁠ screen-${btn.dataset.screen} ⁠).classList.add('active');
+  }));
+}
+
+async function loadMedia() {
+  const grid = document.getElementById('media-grid');
+  grid.innerHTML = '<div class="loading-state">Chargement des médias...</div>';
+  try {
+    mediaList = await sb.getMedia();
+    if (!Array.isArray(mediaList) || !mediaList.length) { grid.innerHTML = '<div class="empty-state"><p>Aucun média — glisse tes fichiers ci-dessus</p></div>'; return; }
+    grid.innerHTML = mediaList.map(m => {
+      const isV = m.type === 'video';
+      return ⁠ <div class="media-card" data-id="${m.id}"><div class="media-thumb-wrap">${isV ? `<video src="${m.url}" class="media-thumb" preload="metadata" muted></video> ⁠ : ⁠ <img src="${m.url}" class="media-thumb" alt="${m.name}"> ⁠}<div class="media-overlay"><div class="select-ring"></div>${isV ? '<span class="video-badge">▶️</span>' : ''}</div><button class="delete-btn" data-id="${m.id}" data-url="${m.url}">✕</button></div><div class="media-info"><span class="media-name">${m.name}</span><span class="media-type">${isV ? 'Vidéo' : 'Photo'}</span></div></div>`;
+    }).join('');
+    grid.querySelectorAll('.media-card').forEach(c => c.addEventListener('click', () => selectMedia(c.dataset.id)));
+    grid.querySelectorAll('.delete-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); deleteMedia(b.dataset.id, b.dataset.url); }));
+  } catch(e) { grid.innerHTML = '<div class="empty-state"><p>Erreur Supabase — vérifie la config</p></div>'; }
+}
+
+function selectMedia(id) {
+  selectedMedia = mediaList.find(m => m.id === id) || null;
+  document.querySelectorAll('.media-card').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
+  const box = document.getElementById('selected-media-display');
+  box.innerHTML = selectedMedia ? (selectedMedia.type === 'video' ? ⁠ <video src="${selectedMedia.url}" style="height:48px;border-radius:6px" muted></video><span>${selectedMedia.name}</span> ⁠ : ⁠ <img src="${selectedMedia.url}" style="height:48px;border-radius:6px;object-fit:cover"><span>${selectedMedia.name}</span> ⁠) : '<span class="no-media-text">Aucun média sélectionné</span>';
+}
+
+async function deleteMedia(id, url) {
+  if (!confirm('Supprimer ce média ?')) return;
+  await sb.deleteMedia(id, url);
+  if (selectedMedia?.id === id) selectedMedia = null;
+  loadMedia();
+}
+
+function setupDropZone() {
+  const zone = document.getElementById('drop-zone'), input = document.getElementById('file-input');
+  document.getElementById('browse-trigger').addEventListener('click', () => input.click());
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
+  input.addEventListener('change', () => handleFiles(input.files));
+}
+
+async function handleFiles(files) {
+  const zone = document.getElementById('drop-zone');
+  let done = 0;
+  zone.innerHTML = ⁠ <div class="drop-inner"><p class="drop-title">Upload en cours... 0/${files.length}</p></div> ⁠;
+  for (const file of files) {
+    try {
+      const url = await sb.uploadFile(file);
+      await sb.insertMedia({ name: file.name.replace(/\.[^.]+$/, ''), type: file.type.startsWith('video') ? 'video' : 'photo', url, context: '' });
+      done++;
+      zone.querySelector('.drop-title').textContent = ⁠ Upload en cours... ${done}/${files.length} ⁠;
+    } catch(e) { console.error(e); }
+  }
+  zone.innerHTML = ⁠ <div class="drop-inner"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" opacity=".4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><p class="drop-title">Glisse tes fichiers ici</p><p class="drop-sub">JPG, PNG, MP4, MOV — ou <span class="link-text" id="browse-trigger">parcourir</span></p></div><input type="file" id="file-input" accept="image/*,video/*" multiple hidden> ⁠;
+  document.getElementById('browse-trigger').addEventListener('click', () => document.getElementById('file-input').click());
+  document.getElementById('file-input').addEventListener('change', e => handleFiles(e.target.files));
+  loadMedia();
+}
+
+function setupFormatBtns() {
+  document.querySelectorAll('.format-btn').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); selectedFormat = btn.dataset.fmt;
+  }));
+}
+
+async function generateContent() {
+  const btn = document.getElementById('gen-btn');
+  const extra = document.getElementById('extra-context').value.trim();
+  const tone = document.getElementById('tone-select').value;
+  btn.disabled = true;
+  btn.innerHTML = ⁠ <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="spin"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Génération en cours... ⁠;
+  document.getElementById('output-section').style.display = 'none';
+  document.getElementById('output-empty').style.display = 'flex';
+  await new Promise(r => setTimeout(r, 600));
+  const { caption, hashtags, brief } = generateTemplate(selectedFormat, tone, selectedMedia, extra);
+  document.getElementById('caption-out').textContent = caption;
+  document.getElementById('hashtags-out').textContent = hashtags;
+  document.getElementById('brief-out').textContent = brief;
+  document.getElementById('output-section').style.display = 'block';
+  document.getElementById('output-empty').style.display = 'none';
+  if (selectedMedia) await sb.insertContent({ media_id: selectedMedia.id, format: selectedFormat, caption, hashtags, brief, tone }).catch(() => {});
+  btn.disabled = false;
+  btn.innerHTML = ⁠ <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Générer le contenu ⁠;
+}
+
+function copyField(id) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
+    const btn = document.querySelector(⁠ [onclick="copyField('${id}')"] ⁠);
+    btn.textContent = 'Copié !'; setTimeout(() => btn.textContent = 'Copier', 2000);
+  });
+}
+
+async function addToPlanning() {
+  const day = prompt('Quel jour ? (ex: Lundi, Mardi...)');
+  if (!day) return;
+  const caption = document.getElementById('caption-out').textContent;
+  const saved = await sb.insertContent({ media_id: selectedMedia?.id || null, format: selectedFormat, caption, hashtags: document.getElementById('hashtags-out').textContent, brief: document.getElementById('brief-out').textContent, tone: document.getElementById('tone-select').value }).catch(() => [null]);
+  await sb.insertPlanning({ day, content_type: selectedFormat, content_id: saved?.[0]?.id || null, note: caption.slice(0, 80) });
+  alert(⁠ ✅ Ajouté au planning — ${day} ⁠); loadPlanning();
+}
+
+async function loadPlanning() {
+  const grid = document.getElementById('week-grid');
+  try {
+    const items = await sb.getPlanning();
+    if (!Array.isArray(items) || !items.length) { grid.innerHTML = '<div class="empty-state"><p>Aucun post planifié — génère du contenu et clique "Ajouter au planning"</p></div>'; return; }
+    grid.innerHTML = items.map(p => ⁠ <div class="day-card"><div class="day-label">${p.day}</div><div class="day-type">${p.content_type}</div><p class="day-note">${p.note || ''}</p></div> ⁠).join('');
+  } catch(e) { console.error(e); }
+}
+
+async function generateWeekPlan() {
+  const days = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+  const types = ['story','story','post','story','story','post','story'];
+  for (let i = 0; i < days.length; i++) {
+    const { caption } = generateTemplate(types[i], 'brut', null, '');
+    await sb.insertPlanning({ day: days[i], content_type: types[i], note: caption.slice(0, 80) }).catch(() => {});
+  }
+  alert('✅ Planning généré !'); loadPlanning();
+}
+
+function updateFollowers() {
+  const val = parseInt(document.getElementById('followers-input').value);
+  if (!val) return;
+  document.getElementById('disp-followers').textContent = val.toLocaleString('fr-FR');
+  const pct = Math.min(Math.round((val / 2500) * 100), 100);
+  const circ = 2 * Math.PI * 24;
+  document.getElementById('ring-fill').style.strokeDasharray = ⁠ ${circ * pct / 100} ${circ} ⁠;
+  document.getElementById('ring-pct').textContent = pct + '%';
+}
+</script>
 </body>
 </html>
