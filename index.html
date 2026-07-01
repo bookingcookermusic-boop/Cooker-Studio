@@ -65,7 +65,6 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 .media-name { font-size: .8rem; font-weight: 500; }
 .media-type { font-size: .72rem; color: var(--text2); }
 .hint-text { font-size: .82rem; color: var(--text3); }
-.hint-text strong { color: var(--text2); }
 .loading-state, .empty-state { grid-column: 1/-1; padding: 2rem; text-align: center; opacity: .5; font-size: .9rem; }
 .gen-layout { display: grid; grid-template-columns: 340px 1fr; gap: 1.5rem; align-items: start; }
 .field-group { margin-bottom: 1.25rem; }
@@ -142,13 +141,11 @@ select { cursor: pointer; }
   .main { margin-left: 0; padding: 1rem; }
   .gen-layout { grid-template-columns: 1fr; }
   .stats-top { grid-template-columns: 1fr; }
-  .bar-row { grid-template-columns: 1fr 80px 36px; }
   .media-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }
 </style>
 </head>
 <body>
-
 <div class="sidebar">
   <div class="logo">
     <span class="logo-mark">C</span>
@@ -157,11 +154,11 @@ select { cursor: pointer; }
   <nav class="nav">
     <button class="nav-item active" data-screen="media">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-      Médias
+      Medias
     </button>
     <button class="nav-item" data-screen="generate">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      Générer
+      Generer
     </button>
     <button class="nav-item" data-screen="planning">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
@@ -181,28 +178,27 @@ select { cursor: pointer; }
 </div>
 
 <main class="main">
-
   <section id="screen-media" class="screen active">
     <div class="screen-header">
-      <h1>Bibliothèque de médias</h1>
-      <p>Importe tes photos et vidéos pour alimenter le générateur</p>
+      <h1>Bibliotheque de medias</h1>
+      <p>Importe tes photos et videos pour alimenter le generateur</p>
     </div>
     <div class="drop-zone" id="drop-zone">
       <div class="drop-inner">
         <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" opacity=".4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         <p class="drop-title">Glisse tes fichiers ici</p>
-        <p class="drop-sub">JPG, PNG, MP4, MOV — ou <span class="link-text" id="browse-trigger">parcourir</span></p>
+        <p class="drop-sub">JPG, PNG, MP4, MOV ou <span class="link-text" id="browse-trigger">parcourir</span></p>
       </div>
       <input type="file" id="file-input" accept="image/,video/" multiple hidden>
     </div>
     <div class="media-grid" id="media-grid"></div>
-    <p class="hint-text">Sélectionne un média, puis va dans <strong>Générer</strong> pour créer le contenu associé.</p>
+    <p class="hint-text">Selectionne un media, puis va dans <strong>Generer</strong></p>
   </section>
 
   <section id="screen-generate" class="screen">
     <div class="screen-header">
-      <h1>Générateur de contenu</h1>
-      <p>Crée la légende, les hashtags et le brief montage calibrés sur ton univers</p>
+      <h1>Generateur de contenu</h1>
+      <p>Cree la legende, les hashtags et le brief montage</p>
     </div>
     <div class="gen-layout">
       <div class="gen-left">
@@ -212,37 +208,37 @@ select { cursor: pointer; }
             <button class="format-btn active" data-fmt="post"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Post Reel</button>
             <button class="format-btn" data-fmt="story"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>Story</button>
             <button class="format-btn" data-fmt="carousel"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="5" width="14" height="14" rx="2"/><path d="M18 7h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2"/></svg>Carrousel</button>
-            <button class="format-btn" data-fmt="scratch"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>De zéro</button>
+            <button class="format-btn" data-fmt="scratch"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>De zero</button>
           </div>
         </div>
         <div class="field-group">
-          <label class="field-label">Média sélectionné</label>
+          <label class="field-label">Media selectionne</label>
           <div class="selected-media-box" id="selected-media-display">
-            <span class="no-media-text">Aucun média — va dans Médias pour en sélectionner un</span>
+            <span class="no-media-text">Aucun media selectionne</span>
           </div>
         </div>
         <div class="field-group">
-          <label class="field-label">Contexte de la soirée / du moment</label>
-          <textarea id="extra-context" rows="3" placeholder="ex: La Démesure, samedi 3h du matin, salle blindée, son disco house..."></textarea>
+          <label class="field-label">Contexte</label>
+          <textarea id="extra-context" rows="3" placeholder="ex: La Demesure, samedi 3h du matin, salle blindee..."></textarea>
         </div>
         <div class="field-group">
-          <label class="field-label">Ton préféré</label>
+          <label class="field-label">Ton</label>
           <select id="tone-select">
-            <option value="brut">Brut et direct (défaut)</option>
-            <option value="hype">Ultra hype et énergie</option>
-            <option value="editorial">Éditorial / lifestyle</option>
-            <option value="bts">Behind-the-scenes intime</option>
+            <option value="brut">Brut et direct</option>
+            <option value="hype">Ultra hype</option>
+            <option value="editorial">Editorial lifestyle</option>
+            <option value="bts">Behind the scenes</option>
           </select>
         </div>
         <button class="btn-primary" id="gen-btn" onclick="generateContent()">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Générer le contenu
+          Generer le contenu
         </button>
       </div>
       <div class="gen-right">
         <div class="output-block" id="output-section" style="display:none">
           <div class="output-field">
-            <div class="output-label"><span>Légende</span><button class="copy-btn" onclick="copyField('caption-out')">Copier</button></div>
+            <div class="output-label"><span>Legende</span><button class="copy-btn" onclick="copyField('caption-out')">Copier</button></div>
             <div class="output-content" id="caption-out"></div>
           </div>
           <div class="output-field">
@@ -250,17 +246,17 @@ select { cursor: pointer; }
             <div class="output-content" id="hashtags-out"></div>
           </div>
           <div class="output-field">
-            <div class="output-label"><span>Brief montage / visuel</span><button class="copy-btn" onclick="copyField('brief-out')">Copier</button></div>
+            <div class="output-label"><span>Brief montage</span><button class="copy-btn" onclick="copyField('brief-out')">Copier</button></div>
             <div class="output-content" id="brief-out"></div>
           </div>
           <div class="output-actions">
-            <button class="btn-secondary" onclick="generateContent()"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Regénérer</button>
-            <button class="btn-primary" onclick="addToPlanning()"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Ajouter au planning</button>
+            <button class="btn-secondary" onclick="generateContent()">Regenérer</button>
+            <button class="btn-primary" onclick="addToPlanning()">Ajouter au planning</button>
           </div>
         </div>
         <div class="output-empty" id="output-empty">
           <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24" opacity=".2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <p>Le contenu généré apparaîtra ici</p>
+          <p>Le contenu genere apparaitra ici</p>
         </div>
       </div>
     </div>
@@ -269,13 +265,10 @@ select { cursor: pointer; }
   <section id="screen-planning" class="screen">
     <div class="screen-header">
       <h1>Planning de la semaine</h1>
-      <p>1 story par jour · 1 post en milieu de semaine</p>
+      <p>1 story par jour, 1 post en milieu de semaine</p>
     </div>
     <div class="week-grid" id="week-grid"></div>
-    <button class="btn-secondary" style="margin-top:1rem" onclick="generateWeekPlan()">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      Générer un nouveau planning
-    </button>
+    <button class="btn-secondary" style="margin-top:1rem" onclick="generateWeekPlan()">Generer un planning</button>
   </section>
 
   <section id="screen-stats" class="screen">
@@ -301,245 +294,318 @@ select { cursor: pointer; }
         </div>
         <div class="update-row">
           <input type="number" id="followers-input" placeholder="Nouveau chiffre...">
-          <button class="btn-primary btn-sm" onclick="updateFollowers()">Mettre à jour</button>
+          <button class="btn-primary btn-sm" onclick="updateFollowers()">Mettre a jour</button>
         </div>
       </div>
       <div class="kpi-grid">
-        <div class="kpi-card"><p class="kpi-label">Taux abandon moy.</p><p class="kpi-value danger">58%</p><p class="kpi-target">Objectif &lt;40%</p></div>
-        <div class="kpi-card"><p class="kpi-label">% via Découvrir</p><p class="kpi-value warning">1,6%</p><p class="kpi-target">Objectif &gt;15%</p></div>
+        <div class="kpi-card"><p class="kpi-label">Taux abandon moy.</p><p class="kpi-value danger">58%</p><p class="kpi-target">Objectif moins de 40%</p></div>
+        <div class="kpi-card"><p class="kpi-label">% via Decouvrir</p><p class="kpi-value warning">1,6%</p><p class="kpi-target">Objectif plus de 15%</p></div>
         <div class="kpi-card"><p class="kpi-label">Vues 30 jours</p><p class="kpi-value">34,7K</p><p class="kpi-target">Tableau de bord IG</p></div>
         <div class="kpi-card"><p class="kpi-label">Nouveaux followers</p><p class="kpi-value">+0</p><p class="kpi-target">Ce mois</p></div>
       </div>
     </div>
     <h2 class="section-title">Meilleures sources de vues</h2>
     <div class="bars-card">
-      <div class="bar-row"><span class="bar-label">Portrait Cannes — Fil</span><div class="bar-track"><div class="bar-fill success" style="width:74%"></div></div><span class="bar-val">74%</span></div>
-      <div class="bar-row"><span class="bar-label">Lacoste VIP — Fil</span><div class="bar-track"><div class="bar-fill accent" style="width:50%"></div></div><span class="bar-val">50%</span></div>
-      <div class="bar-row"><span class="bar-label">Reel Fête Musique — Découvrir</span><div class="bar-track"><div class="bar-fill warning" style="width:8%"></div></div><span class="bar-val">2,5%</span></div>
-      <div class="bar-row"><span class="bar-label">Reel Zénith — Découvrir</span><div class="bar-track"><div class="bar-fill danger" style="width:3%"></div></div><span class="bar-val">0,8%</span></div>
-    </div>
-    <h2 class="section-title">Taux d'abandon par post</h2>
-    <div class="bars-card">
-      <div class="bar-row"><span class="bar-label">Reel Zénith</span><div class="bar-track"><div class="bar-fill danger" style="width:67%"></div></div><span class="bar-val">67,7%</span></div>
-      <div class="bar-row"><span class="bar-label">Reel Fête Musique</span><div class="bar-track"><div class="bar-fill warning" style="width:49%"></div></div><span class="bar-val">49,4%</span></div>
+      <div class="bar-row"><span class="bar-label">Portrait Cannes Fil</span><div class="bar-track"><div class="bar-fill success" style="width:74%"></div></div><span class="bar-val">74%</span></div>
+      <div class="bar-row"><span class="bar-label">Lacoste VIP Fil</span><div class="bar-track"><div class="bar-fill accent" style="width:50%"></div></div><span class="bar-val">50%</span></div>
+      <div class="bar-row"><span class="bar-label">Reel Fete Musique Decouvrir</span><div class="bar-track"><div class="bar-fill warning" style="width:8%"></div></div><span class="bar-val">2,5%</span></div>
+      <div class="bar-row"><span class="bar-label">Reel Zenith Decouvrir</span><div class="bar-track"><div class="bar-fill danger" style="width:3%"></div></div><span class="bar-val">0,8%</span></div>
     </div>
     <div class="insight-box">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-      <p>Ton contenu original ne perce quasiment pas via Découvrir (&lt;3%). Priorité : hook visuel fort dans la première seconde.</p>
+      <p>Ton contenu original ne perce pas via Decouvrir. Priorite : hook visuel fort dans la premiere seconde.</p>
     </div>
   </section>
-
 </main>
 
 <script>
-const SUPABASE_URL = 'https://vhovhcgrwaaizpsaggra.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZob3ZoY2dyd2FhaXpwc2FnZ3JhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5MDk4MjMsImV4cCI6MjA5ODQ4NTgyM30.PlU3JVFVIzZLECz3cWzSz56D37nneo52S1Jrkm_uSnQ';
-const BUCKET = 'cooker-media';
-const H = { 'Authorization': ⁠ Bearer ${SUPABASE_KEY} ⁠, 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' };
+var SURL = 'https://vhovhcgrwaaizpsaggra.supabase.co';
+var SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZob3ZoY2dyd2FhaXpwc2FnZ3JhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5MDk4MjMsImV4cCI6MjA5ODQ4NTgyM30.PlU3JVFVIzZLECz3cWzSz56D37nneo52S1Jrkm_uSnQ';
+var BUCKET = 'cooker-media';
+var SH = { 'Authorization': 'Bearer ' + SKEY, 'apikey': SKEY, 'Content-Type': 'application/json' };
 
-const sb = {
-  async uploadFile(file) {
-    const path = ⁠ ${Date.now()}_${Math.random().toString(36).slice(2)}.${file.name.split('.').pop()} ⁠;
-    const res = await fetch(⁠ ${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path} ⁠, { method: 'POST', headers: { 'Authorization': ⁠ Bearer ${SUPABASE_KEY} ⁠, 'apikey': SUPABASE_KEY }, body: file });
-    if (!res.ok) throw new Error('Upload échoué');
-    return ⁠ ${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path} ⁠;
-  },
-  async insertMedia(d) { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/media ⁠, { method: 'POST', headers: { ...H, 'Prefer': 'return=representation' }, body: JSON.stringify(d) }); return r.json(); },
-  async getMedia() { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/media?order=created_at.desc ⁠, { headers: H }); return r.json(); },
-  async deleteMedia(id, url) {
-    const path = url.split(⁠ /object/public/${BUCKET}/ ⁠)[1];
-    await fetch(⁠ ${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path} ⁠, { method: 'DELETE', headers: { 'Authorization': ⁠ Bearer ${SUPABASE_KEY} ⁠, 'apikey': SUPABASE_KEY } });
-    await fetch(⁠ ${SUPABASE_URL}/rest/v1/media?id=eq.${id} ⁠, { method: 'DELETE', headers: H });
-  },
-  async insertContent(d) { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/generated_content ⁠, { method: 'POST', headers: { ...H, 'Prefer': 'return=representation' }, body: JSON.stringify(d) }); return r.json(); },
-  async getPlanning() { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/planning?order=created_at.asc ⁠, { headers: H }); return r.json(); },
-  async insertPlanning(d) { const r = await fetch(⁠ ${SUPABASE_URL}/rest/v1/planning ⁠, { method: 'POST', headers: { ...H, 'Prefer': 'return=representation' }, body: JSON.stringify(d) }); return r.json(); }
-};
-
-const TEMPLATES = {
-  captions: {
-    brut: [
-      (m,c) => ⁠ ${c||'Sur scène.'} Pas de filtre, pas de mise en scène. Juste la musique et l'énergie de la salle.\n\nC'est ça, une nuit avec Cooker Music. 🎧 ⁠,
-      (m,c) => ⁠ ${m?m.name+'.':''} ${c||'Le son qui fait bouger la salle.'}\n\nDrop à minuit. T'étais là ? 🔊 ⁠,
-      (m,c) => ⁠ Aucun plan. Juste le feeling.\n\n${c||'Set improvisé, salle blindée.'} Voilà comment ça se passe quand la connexion est là. 🖤 ⁠,
-    ],
-    hype: [
-      (m,c) => ⁠ ⚡ ${c||'LA NUIT QUI DÉCHIRE TOUT.'}\n\nQuand le drop arrive à 2h du mat et que toute la salle explose — RIEN ne bat ce feeling.\n\nCooker Music 🔥🔥🔥 ⁠,
-      (m,c) => ⁠ 🚨 ${m?m.name.toUpperCase()+' —':''} ${c||'SET DE FOLIE.'}\n\nLa foule. Les lumières. Le son qui te traverse.\n\nC'EST ÇA LA NUIT. 🎶⚡ ⁠,
-      (m,c) => ⁠ ILS ÉTAIENT PRÊTS. TOI AUSSI T'ÉTAIS LÀ ?\n\n${c||'Une nuit comme ça, ça se raconte pas — ça se vit.'} 🔥\n\nNext date bientôt. Stay tuned. 👀 ⁠,
-    ],
-    editorial: [
-      (m,c) => ⁠ Il y a des nuits qui laissent une trace.\n\n${c||'Lumières tamisées, son cristallin, foule présente.'} Ce moment suspendu entre le set et l'aube — c'est pour ça qu'on fait ce métier.\n\nCooker Music ✦ ⁠,
-      (m,c) => ⁠ ${m?'"'+m.name+'"':'Une image.'} ${c||'Quelques secondes capturées entre deux drops.'}\n\nL'élégance ne se force pas. Elle se ressent. 🖤 ⁠,
-      (m,c) => ⁠ Le DJ booth comme second chez-soi.\n\n${c||'Chaque set est une conversation avec la salle.'} Pas de paroles — juste le son qui dit tout.\n\n✦ Cooker Music ⁠,
-    ],
-    bts: [
-      (m,c) => ⁠ Ce que vous ne voyez pas depuis la piste.\n\n${c||'Le setup, la concentration, les 20 minutes avant d\'ouvrir les portes.'} Ce rituel-là, c'est le mien depuis le début. 🎧 ⁠,
-      (m,c) => ⁠ Behind the decks.\n\n${c||'Avant que la salle se remplisse, il y a ce moment de silence.'} J'en profite pour me connecter au son, à l'espace, à ce qui va se passer. 🖤 ⁠,
-      (m,c) => ⁠ Coulisses.\n\n${c||'On parle rarement de ce qui se passe avant.'} La préparation, les tracklists, les derniers ajustements. Ce soir-là, tout était parfait. ✦ ⁠,
-    ]
-  },
-  hashtags: {
-    post: '#djlife #housemusic #discohouse #electromusic #dj #djset #nightlife #paris #clubbing #musicproducer #rave #dancemusic #underground #techno #deephouse #djbooth #pioneerdj #festival #livemusic #musiclover #instadj #djculture #parisbynight #setlife #booknow #djagency #musicislife #frenchhouse #groovemusic #djworld',
-    story: '#djlife #housemusic #paris #nightlife #djset #clubbing #discohouse #electromusic #dj #musicproducer #rave #dancemusic #djbooth #pioneerdj #musiclover #instadj #djculture #parisbynight #setlife #booknow #frenchhouse #groovemusic #djworld #underground #deephouse #techno #festival #livemusic #musicislife #djagency',
-    carousel: '#djlife #housemusic #discohouse #electromusic #paris #clubbing #djset #nightlife #musicproducer #dj #rave #dancemusic #underground #deephouse #djbooth #pioneerdj #musiclover #instadj #djculture #parisbynight #setlife #booknow #djagency #musicislife #frenchhouse #groovemusic #djworld #techno #festival #livemusic',
-    scratch: '#djlife #housemusic #discohouse #electromusic #paris #clubbing #nightlife #dj #djset #musicproducer #rave #dancemusic #underground #deephouse #djbooth #pioneerdj #musiclover #instadj #djculture #parisbynight #setlife #booknow #djagency #musicislife #frenchhouse #groovemusic #djworld #techno #festival #livemusic',
-  },
-  briefs: {
-    post: () => ⁠ 1. HOOK (0–2s) : Coupe directe sur le moment fort — drop, foule en délire ou regard caméra.\n2. MONTAGE : Cuts rythmés sur les beats, 1 coupe toutes les 1–2 secondes.\n3. MUSIQUE : Extrait du set joué ce soir-là, volume fort.\n4. TEXTE : Lieu + date en bas de frame, police fine blanche.\n5. AMBIANCE : Contraste élevé, tons chauds (orange/violet). ⁠,
-    story: () => ⁠ 1. HOOK (0–1s) : Démarre sur l'action — main sur les platines ou foule.\n2. MONTAGE : 3–4 cuts max, format vertical 9:16, durée 10–15s.\n3. MUSIQUE : Son du set en fond, volume modéré.\n4. TEXTE : Sticker lieu ou date en haut, CTA en bas.\n5. AMBIANCE : Filtre léger warm, vignette douce. ⁠,
-    carousel: () => ⁠ 1. SLIDE 1 : Photo la plus impactante — doit donner envie de swiper.\n2. SLIDES 2–4 : Progression narrative — setup, action, réaction foule.\n3. SLIDE FINAL : Citation courte ou CTA avec date.\n4. COHÉRENCE : Même filtre couleur sur toutes les slides.\n5. FORMAT : Carré 1:1 ou portrait 4:5. ⁠,
-    scratch: () => ⁠ 1. CONCEPT : Liberté créative totale — surprendre, pas documenter.\n2. MONTAGE : Expérimente slow motion, time-lapse ou split screen.\n3. MUSIQUE : Choix artistique personnel.\n4. TEXTE : Optionnel — intégré comme élément graphique.\n5. AMBIANCE : Prends un risque visuel : noir et blanc ou couleurs saturées. ⁠,
-  }
-};
-
-function generateTemplate(fmt, tone, media, extra) {
-  const caps = TEMPLATES.captions[tone] || TEMPLATES.captions.brut;
-  return {
-    caption: caps[Math.floor(Math.random() * caps.length)](media, extra),
-    hashtags: TEMPLATES.hashtags[fmt] || TEMPLATES.hashtags.post,
-    brief: (TEMPLATES.briefs[fmt] || TEMPLATES.briefs.post)()
-  };
-}
-
-let selectedMedia = null, selectedFormat = 'post', mediaList = [];
-
-document.addEventListener('DOMContentLoaded', () => { setupNav(); setupDropZone(); setupFormatBtns(); loadMedia(); loadPlanning(); });
-
-function setupNav() {
-  document.querySelectorAll('.nav-item').forEach(btn => btn.addEventListener('click', () => {
-    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(⁠ screen-${btn.dataset.screen} ⁠).classList.add('active');
-  }));
-}
-
-async function loadMedia() {
-  const grid = document.getElementById('media-grid');
-  grid.innerHTML = '<div class="loading-state">Chargement des médias...</div>';
-  try {
-    mediaList = await sb.getMedia();
-    if (!Array.isArray(mediaList) || !mediaList.length) { grid.innerHTML = '<div class="empty-state"><p>Aucun média — glisse tes fichiers ci-dessus</p></div>'; return; }
-    grid.innerHTML = mediaList.map(m => {
-      const isV = m.type === 'video';
-      return ⁠ <div class="media-card" data-id="${m.id}"><div class="media-thumb-wrap">${isV ? `<video src="${m.url}" class="media-thumb" preload="metadata" muted></video> ⁠ : ⁠ <img src="${m.url}" class="media-thumb" alt="${m.name}"> ⁠}<div class="media-overlay"><div class="select-ring"></div>${isV ? '<span class="video-badge">▶️</span>' : ''}</div><button class="delete-btn" data-id="${m.id}" data-url="${m.url}">✕</button></div><div class="media-info"><span class="media-name">${m.name}</span><span class="media-type">${isV ? 'Vidéo' : 'Photo'}</span></div></div>`;
-    }).join('');
-    grid.querySelectorAll('.media-card').forEach(c => c.addEventListener('click', () => selectMedia(c.dataset.id)));
-    grid.querySelectorAll('.delete-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); deleteMedia(b.dataset.id, b.dataset.url); }));
-  } catch(e) { grid.innerHTML = '<div class="empty-state"><p>Erreur Supabase — vérifie la config</p></div>'; }
-}
-
-function selectMedia(id) {
-  selectedMedia = mediaList.find(m => m.id === id) || null;
-  document.querySelectorAll('.media-card').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
-  const box = document.getElementById('selected-media-display');
-  box.innerHTML = selectedMedia ? (selectedMedia.type === 'video' ? ⁠ <video src="${selectedMedia.url}" style="height:48px;border-radius:6px" muted></video><span>${selectedMedia.name}</span> ⁠ : ⁠ <img src="${selectedMedia.url}" style="height:48px;border-radius:6px;object-fit:cover"><span>${selectedMedia.name}</span> ⁠) : '<span class="no-media-text">Aucun média sélectionné</span>';
-}
-
-async function deleteMedia(id, url) {
-  if (!confirm('Supprimer ce média ?')) return;
-  await sb.deleteMedia(id, url);
-  if (selectedMedia?.id === id) selectedMedia = null;
-  loadMedia();
-}
-
-function setupDropZone() {
-  const zone = document.getElementById('drop-zone'), input = document.getElementById('file-input');
-  document.getElementById('browse-trigger').addEventListener('click', () => input.click());
-  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
-  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
-  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
-  input.addEventListener('change', () => handleFiles(input.files));
-}
-
-async function handleFiles(files) {
-  const zone = document.getElementById('drop-zone');
-  let done = 0;
-  zone.innerHTML = ⁠ <div class="drop-inner"><p class="drop-title">Upload en cours... 0/${files.length}</p></div> ⁠;
-  for (const file of files) {
-    try {
-      const url = await sb.uploadFile(file);
-      await sb.insertMedia({ name: file.name.replace(/\.[^.]+$/, ''), type: file.type.startsWith('video') ? 'video' : 'photo', url, context: '' });
-      done++;
-      zone.querySelector('.drop-title').textContent = ⁠ Upload en cours... ${done}/${files.length} ⁠;
-    } catch(e) { console.error(e); }
-  }
-  zone.innerHTML = ⁠ <div class="drop-inner"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" opacity=".4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><p class="drop-title">Glisse tes fichiers ici</p><p class="drop-sub">JPG, PNG, MP4, MOV — ou <span class="link-text" id="browse-trigger">parcourir</span></p></div><input type="file" id="file-input" accept="image/*,video/*" multiple hidden> ⁠;
-  document.getElementById('browse-trigger').addEventListener('click', () => document.getElementById('file-input').click());
-  document.getElementById('file-input').addEventListener('change', e => handleFiles(e.target.files));
-  loadMedia();
-}
-
-function setupFormatBtns() {
-  document.querySelectorAll('.format-btn').forEach(btn => btn.addEventListener('click', () => {
-    document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active'); selectedFormat = btn.dataset.fmt;
-  }));
-}
-
-async function generateContent() {
-  const btn = document.getElementById('gen-btn');
-  const extra = document.getElementById('extra-context').value.trim();
-  const tone = document.getElementById('tone-select').value;
-  btn.disabled = true;
-  btn.innerHTML = ⁠ <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="spin"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Génération en cours... ⁠;
-  document.getElementById('output-section').style.display = 'none';
-  document.getElementById('output-empty').style.display = 'flex';
-  await new Promise(r => setTimeout(r, 600));
-  const { caption, hashtags, brief } = generateTemplate(selectedFormat, tone, selectedMedia, extra);
-  document.getElementById('caption-out').textContent = caption;
-  document.getElementById('hashtags-out').textContent = hashtags;
-  document.getElementById('brief-out').textContent = brief;
-  document.getElementById('output-section').style.display = 'block';
-  document.getElementById('output-empty').style.display = 'none';
-  if (selectedMedia) await sb.insertContent({ media_id: selectedMedia.id, format: selectedFormat, caption, hashtags, brief, tone }).catch(() => {});
-  btn.disabled = false;
-  btn.innerHTML = ⁠ <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 23 12 19.77 5.82 23 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Générer le contenu ⁠;
-}
-
-function copyField(id) {
-  navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
-    const btn = document.querySelector(⁠ [onclick="copyField('${id}')"] ⁠);
-    btn.textContent = 'Copié !'; setTimeout(() => btn.textContent = 'Copier', 2000);
+function sbUpload(file) {
+  var ext = file.name.split('.').pop();
+  var path = Date.now() + '_' + Math.random().toString(36).slice(2) + '.' + ext;
+  return fetch(SURL + '/storage/v1/object/' + BUCKET + '/' + path, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + SKEY, 'apikey': SKEY },
+    body: file
+  }).then(function(r) {
+    if (!r.ok) throw new Error('Upload echoue');
+    return SURL + '/storage/v1/object/public/' + BUCKET + '/' + path;
   });
 }
 
-async function addToPlanning() {
-  const day = prompt('Quel jour ? (ex: Lundi, Mardi...)');
-  if (!day) return;
-  const caption = document.getElementById('caption-out').textContent;
-  const saved = await sb.insertContent({ media_id: selectedMedia?.id || null, format: selectedFormat, caption, hashtags: document.getElementById('hashtags-out').textContent, brief: document.getElementById('brief-out').textContent, tone: document.getElementById('tone-select').value }).catch(() => [null]);
-  await sb.insertPlanning({ day, content_type: selectedFormat, content_id: saved?.[0]?.id || null, note: caption.slice(0, 80) });
-  alert(⁠ ✅ Ajouté au planning — ${day} ⁠); loadPlanning();
+function sbInsertMedia(d) {
+  return fetch(SURL + '/rest/v1/media', { method: 'POST', headers: Object.assign({}, SH, { 'Prefer': 'return=representation' }), body: JSON.stringify(d) }).then(function(r) { return r.json(); });
 }
 
-async function loadPlanning() {
-  const grid = document.getElementById('week-grid');
-  try {
-    const items = await sb.getPlanning();
-    if (!Array.isArray(items) || !items.length) { grid.innerHTML = '<div class="empty-state"><p>Aucun post planifié — génère du contenu et clique "Ajouter au planning"</p></div>'; return; }
-    grid.innerHTML = items.map(p => ⁠ <div class="day-card"><div class="day-label">${p.day}</div><div class="day-type">${p.content_type}</div><p class="day-note">${p.note || ''}</p></div> ⁠).join('');
-  } catch(e) { console.error(e); }
+function sbGetMedia() {
+  return fetch(SURL + '/rest/v1/media?order=created_at.desc', { headers: SH }).then(function(r) { return r.json(); });
 }
 
-async function generateWeekPlan() {
-  const days = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-  const types = ['story','story','post','story','story','post','story'];
-  for (let i = 0; i < days.length; i++) {
-    const { caption } = generateTemplate(types[i], 'brut', null, '');
-    await sb.insertPlanning({ day: days[i], content_type: types[i], note: caption.slice(0, 80) }).catch(() => {});
+function sbDeleteMedia(id, url) {
+  var path = url.split('/object/public/' + BUCKET + '/')[1];
+  return fetch(SURL + '/storage/v1/object/' + BUCKET + '/' + path, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + SKEY, 'apikey': SKEY } }).then(function() {
+    return fetch(SURL + '/rest/v1/media?id=eq.' + id, { method: 'DELETE', headers: SH });
+  });
+}
+
+function sbInsertContent(d) {
+  return fetch(SURL + '/rest/v1/generated_content', { method: 'POST', headers: Object.assign({}, SH, { 'Prefer': 'return=representation' }), body: JSON.stringify(d) }).then(function(r) { return r.json(); });
+}
+
+function sbGetPlanning() {
+  return fetch(SURL + '/rest/v1/planning?order=created_at.asc', { headers: SH }).then(function(r) { return r.json(); });
+}
+
+function sbInsertPlanning(d) {
+  return fetch(SURL + '/rest/v1/planning', { method: 'POST', headers: Object.assign({}, SH, { 'Prefer': 'return=representation' }), body: JSON.stringify(d) }).then(function(r) { return r.json(); });
+}
+
+var CAPTIONS_BRUT = [
+  "Sur scene. Pas de filtre. Juste la musique et l energie de la salle.\n\nCooker Music. 🎧",
+  "Le son qui fait bouger la salle.\n\nDrop a minuit. T etais la ? 🔊",
+  "Aucun plan. Juste le feeling.\n\nSet improvise, salle blindee. Voila comment ca se passe. 🖤"
+];
+var CAPTIONS_HYPE = [
+  "LA NUIT QUI DECHIRE TOUT. ⚡\n\nQuand le drop arrive a 2h du mat et que toute la salle explose. RIEN ne bat ce feeling.\n\nCooker Music 🔥🔥🔥",
+  "SET DE FOLIE. 🚨\n\nLa foule. Les lumieres. Le son qui te traverse.\n\nC EST CA LA NUIT. 🎶⚡",
+  "ILS ETAIENT PRETS. TOI AUSSI T ETAIS LA ?\n\nUne nuit comme ca, ca se raconte pas, ca se vit. 🔥\n\nNext date bientot. Stay tuned. 👀"
+];
+var CAPTIONS_EDITORIAL = [
+  "Il y a des nuits qui laissent une trace.\n\nLumieres tamisees, son cristallin, foule presente. Ce moment suspendu entre le set et l aube.\n\nCooker Music. ✦",
+  "Quelques secondes capturees entre deux drops.\n\nL elegance ne se force pas. Elle se ressent. 🖤",
+  "Le DJ booth comme second chez-soi.\n\nChaque set est une conversation avec la salle. Juste le son qui dit tout.\n\nCooker Music ✦"
+];
+var CAPTIONS_BTS = [
+  "Ce que vous ne voyez pas depuis la piste.\n\nLe setup, la concentration, les 20 minutes avant d ouvrir les portes. Ce rituel, c est le mien. 🎧",
+  "Behind the decks.\n\nAvant que la salle se remplisse, il y a ce moment de silence. Je me connecte au son. 🖤",
+  "Coulisses.\n\nOn parle rarement de ce qui se passe avant. La preparation, les tracklists, les ajustements. Ce soir, tout etait parfait. ✦"
+];
+
+var HASHTAGS = '#djlife #housemusic #discohouse #electromusic #dj #djset #nightlife #paris #clubbing #musicproducer #rave #dancemusic #underground #techno #deephouse #djbooth #pioneerdj #festival #livemusic #musiclover #instadj #djculture #parisbynight #setlife #booknow #djagency #musicislife #frenchhouse #groovemusic #djworld';
+
+var BRIEFS = {
+  post: "1. HOOK (0-2s) : Coupe directe sur le moment fort, drop ou foule.\n2. MONTAGE : Cuts rythmes sur les beats, 1 coupe toutes les 2 secondes.\n3. MUSIQUE : Extrait du set joue ce soir, volume fort.\n4. TEXTE : Lieu + date en bas, police blanche fine.\n5. AMBIANCE : Contraste eleve, tons chauds orange violet.",
+  story: "1. HOOK (0-1s) : Action immediate, main sur les platines ou foule.\n2. MONTAGE : 3-4 cuts max, format vertical 9:16, duree 15s.\n3. MUSIQUE : Son du set en fond, volume modere.\n4. TEXTE : Sticker lieu en haut, CTA en bas.\n5. AMBIANCE : Filtre warm, vignette douce.",
+  carousel: "1. SLIDE 1 : Photo la plus impactante pour donner envie de swiper.\n2. SLIDES 2-4 : Setup, action, reaction foule.\n3. SLIDE FINAL : Citation courte ou prochaine date.\n4. COHERENCE : Meme filtre sur toutes les slides.\n5. FORMAT : Carre 1:1 ou portrait 4:5.",
+  scratch: "1. CONCEPT : Liberte totale, surprendre pas documenter.\n2. MONTAGE : Slow motion, time-lapse ou split screen.\n3. MUSIQUE : Choix artistique personnel.\n4. TEXTE : Optionnel, integre comme element graphique.\n5. AMBIANCE : Noir et blanc ou couleurs saturees a fond."
+};
+
+var selectedMedia = null;
+var selectedFormat = 'post';
+var mediaList = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+  setupNav();
+  setupDropZone();
+  setupFormatBtns();
+  loadMedia();
+  loadPlanning();
+});
+
+function setupNav() {
+  var btns = document.querySelectorAll('.nav-item');
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.nav-item').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('screen-' + btn.dataset.screen).classList.add('active');
+    });
+  });
+}
+
+function loadMedia() {
+  var grid = document.getElementById('media-grid');
+  grid.innerHTML = '<div class="loading-state">Chargement...</div>';
+  sbGetMedia().then(function(list) {
+    mediaList = list;
+    if (!Array.isArray(list) || !list.length) {
+      grid.innerHTML = '<div class="empty-state"><p>Aucun media. Glisse tes fichiers ci-dessus.</p></div>';
+      return;
+    }
+    grid.innerHTML = list.map(function(m) {
+      var isV = m.type === 'video';
+      var thumb = isV ? '<video src="' + m.url + '" class="media-thumb" preload="metadata" muted></video>' : '<img src="' + m.url + '" class="media-thumb" alt="' + m.name + '">';
+      return '<div class="media-card" data-id="' + m.id + '"><div class="media-thumb-wrap">' + thumb + '<div class="media-overlay"><div class="select-ring"></div>' + (isV ? '<span class="video-badge">&#9654;</span>' : '') + '</div><button class="delete-btn" data-id="' + m.id + '" data-url="' + m.url + '">x</button></div><div class="media-info"><span class="media-name">' + m.name + '</span><span class="media-type">' + (isV ? 'Video' : 'Photo') + '</span></div></div>';
+    }).join('');
+    grid.querySelectorAll('.media-card').forEach(function(c) {
+      c.addEventListener('click', function() { selectMedia(c.dataset.id); });
+    });
+    grid.querySelectorAll('.delete-btn').forEach(function(b) {
+      b.addEventListener('click', function(e) { e.stopPropagation(); deleteMedia(b.dataset.id, b.dataset.url); });
+    });
+  }).catch(function() {
+    grid.innerHTML = '<div class="empty-state"><p>Erreur Supabase. Verifie la configuration.</p></div>';
+  });
+}
+
+function selectMedia(id) {
+  selectedMedia = null;
+  for (var i = 0; i < mediaList.length; i++) { if (mediaList[i].id === id) { selectedMedia = mediaList[i]; break; } }
+  document.querySelectorAll('.media-card').forEach(function(c) { c.classList.toggle('selected', c.dataset.id === id); });
+  var box = document.getElementById('selected-media-display');
+  if (selectedMedia) {
+    var isV = selectedMedia.type === 'video';
+    box.innerHTML = isV ? '<video src="' + selectedMedia.url + '" style="height:48px;border-radius:6px" muted></video><span>' + selectedMedia.name + '</span>' : '<img src="' + selectedMedia.url + '" style="height:48px;border-radius:6px;object-fit:cover"><span>' + selectedMedia.name + '</span>';
+  } else {
+    box.innerHTML = '<span class="no-media-text">Aucun media selectionne</span>';
   }
-  alert('✅ Planning généré !'); loadPlanning();
+}
+
+function deleteMedia(id, url) {
+  if (!confirm('Supprimer ce media ?')) return;
+  sbDeleteMedia(id, url).then(function() {
+    if (selectedMedia && selectedMedia.id === id) selectedMedia = null;
+    loadMedia();
+  });
+}
+
+function setupDropZone() {
+  var zone = document.getElementById('drop-zone');
+  var input = document.getElementById('file-input');
+  document.getElementById('browse-trigger').addEventListener('click', function() { input.click(); });
+  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', function() { zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop', function(e) { e.preventDefault(); zone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
+  input.addEventListener('change', function() { handleFiles(input.files); });
+}
+
+function handleFiles(files) {
+  var zone = document.getElementById('drop-zone');
+  var total = files.length;
+  var done = 0;
+  zone.innerHTML = '<div class="drop-inner"><p class="drop-title">Upload en cours... 0/' + total + '</p></div>';
+  var arr = Array.from(files);
+  var idx = 0;
+  function next() {
+    if (idx >= arr.length) {
+      zone.innerHTML = '<div class="drop-inner"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" opacity=".4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><p class="drop-title">Glisse tes fichiers ici</p><p class="drop-sub">JPG, PNG, MP4, MOV ou <span class="link-text" id="browse-trigger">parcourir</span></p></div><input type="file" id="file-input" accept="image/,video/" multiple hidden>';
+      document.getElementById('browse-trigger').addEventListener('click', function() { document.getElementById('file-input').click(); });
+      document.getElementById('file-input').addEventListener('change', function(e) { handleFiles(e.target.files); });
+      loadMedia();
+      return;
+    }
+    var file = arr[idx];
+    idx++;
+    sbUpload(file).then(function(url) {
+      var type = file.type.indexOf('video') >= 0 ? 'video' : 'photo';
+      return sbInsertMedia({ name: file.name.replace(/\.[^.]+$/, ''), type: type, url: url, context: '' });
+    }).then(function() {
+      done++;
+      var title = zone.querySelector('.drop-title');
+      if (title) title.textContent = 'Upload en cours... ' + done + '/' + total;
+      next();
+    }).catch(function(err) {
+      console.error(err);
+      next();
+    });
+  }
+  next();
+}
+
+function setupFormatBtns() {
+  document.querySelectorAll('.format-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.format-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedFormat = btn.dataset.fmt;
+    });
+  });
+}
+
+function generateContent() {
+  var btn = document.getElementById('gen-btn');
+  var extra = document.getElementById('extra-context').value.trim();
+  var tone = document.getElementById('tone-select').value;
+  btn.disabled = true;
+  btn.textContent = 'Generation en cours...';
+  document.getElementById('output-section').style.display = 'none';
+  document.getElementById('output-empty').style.display = 'flex';
+  setTimeout(function() {
+    var caps = tone === 'hype' ? CAPTIONS_HYPE : tone === 'editorial' ? CAPTIONS_EDITORIAL : tone === 'bts' ? CAPTIONS_BTS : CAPTIONS_BRUT;
+    var caption = caps[Math.floor(Math.random() * caps.length)];
+    if (extra) caption = extra + '\n\n' + caption;
+    var hashtags = HASHTAGS;
+    var brief = BRIEFS[selectedFormat] || BRIEFS.post;
+    document.getElementById('caption-out').textContent = caption;
+    document.getElementById('hashtags-out').textContent = hashtags;
+    document.getElementById('brief-out').textContent = brief;
+    document.getElementById('output-section').style.display = 'block';
+    document.getElementById('output-empty').style.display = 'none';
+    if (selectedMedia) {
+      sbInsertContent({ media_id: selectedMedia.id, format: selectedFormat, caption: caption, hashtags: hashtags, brief: brief, tone: tone }).catch(function() {});
+    }
+    btn.disabled = false;
+    btn.textContent = 'Generer le contenu';
+  }, 600);
+}
+
+function copyField(id) {
+  var txt = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(txt).then(function() {
+    var btn = document.querySelector('[onclick="copyField(\'' + id + '\')"]');
+    if (btn) { btn.textContent = 'Copie !'; setTimeout(function() { btn.textContent = 'Copier'; }, 2000); }
+  });
+}
+
+function addToPlanning() {
+  var day = prompt('Quel jour ? (ex: Lundi, Mardi...)');
+  if (!day) return;
+  var caption = document.getElementById('caption-out').textContent;
+  sbInsertContent({
+    media_id: selectedMedia ? selectedMedia.id : null,
+    format: selectedFormat,
+    caption: caption,
+    hashtags: document.getElementById('hashtags-out').textContent,
+    brief: document.getElementById('brief-out').textContent,
+    tone: document.getElementById('tone-select').value
+  }).then(function(saved) {
+    return sbInsertPlanning({ day: day, content_type: selectedFormat, content_id: saved && saved[0] ? saved[0].id : null, note: caption.slice(0, 80) });
+  }).then(function() {
+    alert('Ajoute au planning : ' + day);
+    loadPlanning();
+  }).catch(function() {
+    alert('Erreur lors de l ajout au planning');
+  });
+}
+
+function loadPlanning() {
+  var grid = document.getElementById('week-grid');
+  sbGetPlanning().then(function(items) {
+    if (!Array.isArray(items) || !items.length) {
+      grid.innerHTML = '<div class="empty-state"><p>Aucun post planifie. Genere du contenu et clique Ajouter au planning.</p></div>';
+      return;
+    }
+    grid.innerHTML = items.map(function(p) {
+      return '<div class="day-card"><div class="day-label">' + p.day + '</div><div class="day-type">' + p.content_type + '</div><p class="day-note">' + (p.note || '') + '</p></div>';
+    }).join('');
+  }).catch(function() {});
+}
+
+function generateWeekPlan() {
+  var days = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+  var types = ['story','story','post','story','story','post','story'];
+  var idx = 0;
+  function next() {
+    if (idx >= days.length) { alert('Planning genere !'); loadPlanning(); return; }
+    var caps = CAPTIONS_BRUT;
+    var note = caps[Math.floor(Math.random() * caps.length)].slice(0, 80);
+    sbInsertPlanning({ day: days[idx], content_type: types[idx], note: note }).then(function() { idx++; next(); }).catch(function() { idx++; next(); });
+  }
+  next();
 }
 
 function updateFollowers() {
-  const val = parseInt(document.getElementById('followers-input').value);
+  var val = parseInt(document.getElementById('followers-input').value);
   if (!val) return;
   document.getElementById('disp-followers').textContent = val.toLocaleString('fr-FR');
-  const pct = Math.min(Math.round((val / 2500) * 100), 100);
-  const circ = 2 * Math.PI * 24;
-  document.getElementById('ring-fill').style.strokeDasharray = ⁠ ${circ * pct / 100} ${circ} ⁠;
+  var pct = Math.min(Math.round((val / 2500) * 100), 100);
+  var circ = 2 * Math.PI * 24;
+  document.getElementById('ring-fill').style.strokeDasharray = (circ * pct / 100) + ' ' + circ;
   document.getElementById('ring-pct').textContent = pct + '%';
 }
 </script>
